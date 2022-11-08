@@ -1,0 +1,28 @@
+[user]
+    email = phil.d324@gmail.com
+    name = Phillip Dykman
+
+[alias]
+    s = status
+    d = diff
+    ds = diff --staged
+    c = commit
+    ca = commit --amend
+    can = commit --amend --noedit
+    co = checkout
+    r = restore --staged
+    rpull = pull --rebase --autostash
+    ls   = log --oneline --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+    blog = log --graph --all --format=format:'%w(80,0,0)%C(bold magenta)%h%C(reset) %C(white)%ad%C(reset) %C(dim white)(%ar)%C(reset) %C(bold dim white)%aN%C(auto)%+D%C(reset)%n         %C(bold white)%s%C(reset)%+b%n'#%C(dim white)Committed: %cD%n%C(dim white)By: %cn <%ce>%C(reset)%n'
+    tree = log --graph --all --format=format:'%C(bold magenta)%h%C(auto)%d%C(reset) %s%C(reset)'
+    for = !git-forest -a --sha --all | less -S
+
+[pull]
+	rebase = true
+; [commit]
+;	gpgsign = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
