@@ -1,0 +1,5 @@
+FROM archlinux:base-20230910.0.177821
+RUN pacman -Syyu --noconfirm rsync curl git
+COPY entrypoint.sh /entrypoint.sh
+VOLUME /original-dotfiles
+ENTRYPOINT /entrypoint.sh
