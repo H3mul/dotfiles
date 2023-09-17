@@ -11,14 +11,17 @@
 {{-   $name = .name -}}
 {{- end -}}
 {{- if hasKey . "email" -}}
-{{-   $name = .email -}}
+{{-   $email = .email -}}
 {{- end -}}
 
 {{- /* OS identification */ -}}
 {{- /* From: https://www.chezmoi.io/user-guide/machines/linux/ */ -}}
+{{- $is_termux := (env "WSL_DISTRO_NAME") | not | not -}}
 {{- $osid := .chezmoi.os -}}
 {{- if hasKey .chezmoi.osRelease "id" -}}
 {{-   $osid = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- else if $is_termux -}}
+{{-   $osid = printf "%s-%s" .chezmoi.os "termux" -}}
 {{- end -}}
 
 {{- $chezmoiForce := or (has "--force" .chezmoi.args) (has "--force=true" .chezmoi.args) -}}
