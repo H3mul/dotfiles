@@ -89,10 +89,8 @@ else
   git clone --branch "${DOTFILES_BRANCH}" "${DOTFILES_REPO}" "${DOTFILES_DIR}"
 fi
 
-if [ -f "${DOTFILES_DIR}/install.sh" ]; then
-  INSTALL_SCRIPT="${DOTFILES_DIR}/install.sh"
-elif [ -f "${DOTFILES_DIR}/install" ]; then
-  INSTALL_SCRIPT="${DOTFILES_DIR}/install"
+if [ -f "${DOTFILES_DIR}/scripts/install.sh" ]; then
+  INSTALL_SCRIPT="${DOTFILES_DIR}/scripts/install.sh"
 else
   error "No install script found in the dotfiles."
 fi
