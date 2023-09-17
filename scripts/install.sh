@@ -29,7 +29,7 @@ else
 fi
 
 if [ -n "${DOTFILES_DEBUG-}" ]; then
-  set -- "$@" --debug
+  set -- "$@" --debug --force
 fi
 
 log_task "Running 'chezmoi $*'"

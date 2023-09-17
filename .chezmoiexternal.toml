@@ -1,4 +1,0 @@
-["scripts"]
-    type = "git-repo"
-    url = "https://github.com/H3mul/scripts.git"
-    refreshPeriod = "168h"

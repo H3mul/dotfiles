@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+zsh_plugin_home=.oh-my-zsh/custom/plugins/
+zsh_plugin () {
+    # if [[ -z $1 ]]; then; return; fi
+    # eg wfxr/forgit
+    plugin_path=$1
+    plugin=${plugin_path#*\/}
+    plugin_home="$zsh_plugin_home/$plugin"
+
+    if [ ! -d  "$plugin_home" ]; then
+        log_task "installing $plugin for zsh..."
+        git clone "https://github.com/$plugin_path" "$plugin_home"
+    fi
+}
+
+# zsh_plugin 'wfxr/forgit'
+zsh_plugin 'zsh-users/zsh-syntax-highlighting'
+zsh_plugin 'zsh-users/zsh-autosuggestions'
+zsh_plugin 'Aloxaf/fzf-tab'

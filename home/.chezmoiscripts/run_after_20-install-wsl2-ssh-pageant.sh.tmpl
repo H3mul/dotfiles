@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -eu
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+wsl2_ssh_pageant_path=$HOME/.ssh/wsl2-ssh-pageant.exe
+if [ ! -f $wsl2_ssh_pageant_path ]; then
+    log_task "Installing wsl2-ssh-pageant"
+    wget -O $wsl2_ssh_pageant_path \
+        https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe
+    chmod +x $wsl2_ssh_pageant_path
+fi

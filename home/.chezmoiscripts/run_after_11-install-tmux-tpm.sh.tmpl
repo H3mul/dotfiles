@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+tpm_path=$HOME/.tmux/plugins/tpm
+if [ ! -f $tpm_path ]; then
+    log_task "Installing Tmux TPM"
+    git clone --depth 1 https://github.com/tmux-plugins/tpm $tpm_path
+
+    log_task "Installing Tmux TPM plugins"
+    $tpm_path/scripts/install_plugins.sh 
+fi

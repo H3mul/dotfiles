@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+log_task "Changing user shell to zsh..."
+log_cmd chsh -s /usr/bin/zsh

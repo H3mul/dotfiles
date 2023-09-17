@@ -1,0 +1,33 @@
+#!/bin/bash
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+packages=(
+    git
+    curl
+    wget
+    zsh
+    gnupg
+    neovim
+    tmux
+    fzf
+    sudo
+)
+
+log_task "Installing packages: ${packages[*]}"
+
+# This script also gets called when running rootmoi
+{{ if eq .chezmoi.username "root" }}
+    sudo=""
+{{ else }}
+    sudo="sudo"
+{{ end }}
+
+{{ if eq .osid "linux-ubuntu" }}
+    packages+=(fd-find) # Used by fzf completion)
+    log_cmd $sudo apt update
+    log_cmd $sudo apt install --yes --no-install-recommends "${packages[@]}"
+{{ else if eq .osid "linux-arch" }}
+    packages+=(fd) # Used by fzf completion)
+    log_cmd $sudo pacman -Syyu --noconfirm "${packages[@]}"
+{{ end }}

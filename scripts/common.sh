@@ -22,6 +22,10 @@ log_blue() {
   log_color "0;34" "$@"
 }
 
+log_green() {
+  log_color "1;32" "$@"
+}
+
 log_task() {
   log_blue "🔃" "$@"
 }
