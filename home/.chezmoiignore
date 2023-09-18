@@ -1,3 +1,7 @@
 {{ if or (not .is_wsl) (not .usegpg4win) }}
 .chezmoiscripts/*-install-wsl2-ssh-pageant.sh
 {{- end }}
+
+{{ if ne .osid "linux-arch" -}}
+.chezmoiscripts/*-install-yay.sh
+{{- end }}

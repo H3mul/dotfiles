@@ -5,9 +5,9 @@ set -eu # -e: exit on error
 cd $(dirname "$0")
 source ./common.sh
 
-if ! chezmoi="$(command -v chezmoi)"; then
-  bin_dir="${HOME}/.local/bin"
-  chezmoi="${bin_dir}/chezmoi"
+bin_dir="${HOME}/.local/bin"
+chezmoi="${bin_dir}/chezmoi"
+if [ ! -f $chezmoi ] || [ ! chezmoi="$(command -v chezmoi)" ]; then
   log_task "Installing chezmoi to '${chezmoi}'"
   if command -v curl >/dev/null; then
     chezmoi_install_script="$(curl -fsSL https://get.chezmoi.io)"

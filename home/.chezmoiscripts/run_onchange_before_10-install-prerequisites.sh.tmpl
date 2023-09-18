@@ -32,6 +32,6 @@ log_task "Installing packages: ${packages[*]}"
     log_cmd pkg update
     log_cmd pkg install -y "${packages[@]}"
 {{ else if eq .osid "linux-arch" }}
-    packages+=(fd sudo)
-    log_cmd $sudo pacman -Syyu --noconfirm "${packages[@]}"
+    packages+=(fd sudo base-devel)
+    log_cmd $sudo pacman -Syyu --noconfirm --needed "${packages[@]}"
 {{ end }}
