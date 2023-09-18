@@ -5,7 +5,7 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
 tpm_path=$HOME/.tmux/plugins/tpm
-if [ ! -f $tpm_path ]; then
+if [ ! -d $tpm_path ]; then
     log_task "Installing Tmux TPM"
     git clone --depth 1 https://github.com/tmux-plugins/tpm $tpm_path
 
