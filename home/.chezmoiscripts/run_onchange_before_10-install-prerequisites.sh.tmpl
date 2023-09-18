@@ -11,7 +11,7 @@ packages=(
     neovim
     tmux
     fzf
-    sudo
+    chezmoi
 )
 
 log_task "Installing packages: ${packages[*]}"
@@ -24,7 +24,7 @@ log_task "Installing packages: ${packages[*]}"
 {{ end }}
 
 {{ if eq .osid "linux-ubuntu" }}
-    packages+=(fd-find) # Used by fzf completion
+    packages+=(fd-find sudo)
     log_cmd $sudo apt update
     log_cmd $sudo apt install --yes --no-install-recommends "${packages[@]}"
 {{ else if eq .osid "linux-termux" }}
@@ -32,6 +32,6 @@ log_task "Installing packages: ${packages[*]}"
     log_cmd pkg update
     log_cmd pkg install -y "${packages[@]}"
 {{ else if eq .osid "linux-arch" }}
-    packages+=(fd) # Used by fzf completion
+    packages+=(fd sudo)
     log_cmd $sudo pacman -Syyu --noconfirm "${packages[@]}"
 {{ end }}

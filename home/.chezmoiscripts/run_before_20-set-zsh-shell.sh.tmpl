@@ -1,6 +1,9 @@
 #!{{ lookPath "bash" }}
 
-source {{ .chezmoi.workingTree }}/scripts/common.sh
+set -eu
 
-log_task "Changing user shell to zsh..."
-log_cmd chsh -s {{ lookPath "zsh" }}
+{{ if eq .osid "linux-termux" -}}
+    chsh -s zsh
+{{- else -}}
+    chsh -s $(chsh -l | grep zsh | head -n 1)
+{{ end }}
