@@ -11,10 +11,13 @@ source {{ .chezmoi.workingTree }}/scripts/common.sh
         # https://bugs.launchpad.net/ubuntu/+source/fzf/+bug/1928670
         log_task "Fixing fzf key bindings in Ubuntu manually"
         sudo wget https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh -O $keybindings_path
-   fi
+    fi
 
-   log_task "Adding a symlink from fdfind to fd"
-   fdfind_path=$(which fdfind)
-   fd_path="$(dirname $fdfind_path)/fd"
-   sudo ln -s $fdfind_path $fd_path
+    log_task "Adding a symlink from fdfind to fd"
+    fdfind_path=$(which fdfind)
+    fd_path="$(dirname $fdfind_path)/fd"
+
+    if [ ! -f $fd_path ]; then
+        sudo ln -s $fdfind_path $fd_path
+    fi
 {{- end -}}
