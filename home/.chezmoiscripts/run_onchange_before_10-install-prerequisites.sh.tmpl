@@ -12,8 +12,13 @@ packages=(
     tmux
     fzf
     chezmoi
+
+    {{- if .install_optional_apps }}
     bat
     eza
+    dust
+    duf
+    {{ end -}}
 )
 
 log_task "Installing packages: ${packages[*]}"
