@@ -137,6 +137,17 @@ set nojoinspaces
 " Use clipboard all the time
 set clipboard+=unnamedplus
 
+" Use windows clipboard in wsl
+" from: https://www.reddit.com/r/bashonubuntuonwindows/comments/uy6ltk/how_do_you_unset_vim_copy_from_y_clipexe_into_the/
+let s:clipCheck = 1
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' && s:clipCheck == 1 | call system(s:clip, @0) | endif
+    augroup END
+endif
+
 set ttyfast
 set lazyredraw
 

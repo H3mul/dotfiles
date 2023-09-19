@@ -41,7 +41,8 @@ export FZF_DEFAULT_COMMAND='{{ $fd }} --type f --hidden --follow -E .git --no-ig
 export FZF_ALT_C_COMMAND='{{ $fd }} --type d --hidden --follow -E .git --no-ignore-vcs'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--color fg:252,hl:67,fg+:252,bg+:235,hl+:81 --color info:144,prompt:161,spinner:135,pointer:135,marker:118"
-# enable-fzf-tab
+
+export BAT_PAGER="less -RF --mouse"
 
 export DISABLE_AUTO_TITLE='true'
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#4C566A"
