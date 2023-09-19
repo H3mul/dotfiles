@@ -27,8 +27,10 @@ unsetopt beep
 set -o ignoreeof
 
 {{ if eq .osid "linux-arch" -}}
-source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
+{{ end -}}
+{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
+source $HOME/.fzf/key-bindings.zsh
 {{ end -}}
 export FZF_DEFAULT_OPTS="--color fg:252,hl:67,fg+:252,bg+:235,hl+:81 --color info:144,prompt:161,spinner:135,pointer:135,marker:118"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow -E .git --no-ignore-vcs'
@@ -55,7 +57,7 @@ bindkey '^[L' end-of-line
 bindkey '^[H' beginning-of-line
 bindkey '^?' backward-delete-char
 bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
+# bindkey '^r' history-incremental-search-backward - conflicts with fzf ctrl r
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 

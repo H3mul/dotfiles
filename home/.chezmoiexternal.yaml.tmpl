@@ -38,3 +38,11 @@
   executable: true
   refreshPeriod: "168h"
 {{- end }}
+
+{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
+".fzf/key-bindings.zsh":
+  type: "file"
+  url: "https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh"
+  executable: true
+  refreshPeriod: "168h"
+{{- end }}
