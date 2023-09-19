@@ -1,12 +1,8 @@
 {{- /* Defaults */ -}}
 {{- $name := "Phillip Dykman" -}}
 {{- $email := "phil.d324@gmail.com" -}}
-{{- $usegpg4win := false -}}
 
 {{- /* Pull data from chezmoi config */ -}}
-{{- if hasKey . "usegpg4win" -}}
-{{-   $usegpg4win = .usegpg4win -}}
-{{- end -}}
 {{- if hasKey . "name" -}}
 {{-   $name = .name -}}
 {{- end -}}
@@ -89,5 +85,7 @@ data:
 
   osid: {{ $osid | quote }}
   is_wsl: {{ $wsl }}
-  usegpg4win: {{ $usegpg4win }}
   is_headless: {{ $headless }}
+
+  nvim_home: ".config/nvim"
+  usegpg4win: false

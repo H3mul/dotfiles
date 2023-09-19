@@ -7,7 +7,7 @@ export NODE_PATH=$HOME/.node/lib/node_modules
 export NPM_CONFIG_PREFIX=$HOME/.node
 
 export EDITOR='nvim'
-export NVIM_HOME=$HOME/.config/nvim
+export NVIM_HOME=$HOME/{{- .nvim_home }}
 export SYSTEMD_EDITOR=$EDITOR
 
 {{ if and .is_wsl .usegpg4win -}}

@@ -3,14 +3,8 @@
 set -eu
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
-source $HOME/.profile
 
-plug_path="$NVIM_HOME/autoload/plug.vim"
-if [ ! -f $plug_path ]; then
-    log_task "Installing nvim Plug"
-    curl -fLo $plug_path --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
+if [ ! -d $HOME/{{- .nvim_home -}}/plugged ]; then
     log_task "Installing nvim Plug plugins"
     nvim +'PlugInstall --sync' +qa
 fi
