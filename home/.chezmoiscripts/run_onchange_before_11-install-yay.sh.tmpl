@@ -8,6 +8,6 @@ if ! command -v yay >/dev/null; then
     TMP_DIR=$(mktemp -d -t yay-XXXXXX)
     git clone https://aur.archlinux.org/yay.git --depth 1 $TMP_DIR
     cd $TMP_DIR
-    makepkg -si
+    makepkg -si --noconfirm
     rm -rf $TMP_DIR
 fi
