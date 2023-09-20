@@ -2,7 +2,7 @@ call plug#begin(expand("$NVIM_HOME/plugged"))
 
 " Theming
 Plug 'itchyny/lightline.vim'
-Plug 'arcticicestudio/nord-vim'
+Plug 'folke/tokyonight.nvim'
 Plug 'mhinz/vim-startify'
 
 " Utility

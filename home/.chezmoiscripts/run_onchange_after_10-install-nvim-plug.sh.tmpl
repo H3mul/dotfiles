@@ -1,0 +1,9 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+# plugins.vim hash: {{ include "dot_config/nvim/plugins.vim" | sha256sum }}
+log_task "Install nvim plugins"
+nvim --headless +'PlugInstall --sync' +'PlugClean!' +qa

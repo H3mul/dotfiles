@@ -115,16 +115,10 @@ set noequalalways
 set cmdheight=1
 set noshowmode
 
-" NORD STUFF
-let g:lightline = {'colorscheme': 'nord'}
-colorscheme nord
+let g:lightline = {'colorscheme': 'tokyonight'}
+colorscheme tokyonight
 
 set encoding=UTF-8
-
-let g:nord_uniform_diff_background = 1
-let g:nord_italic = 1
-let g:nord_italic_comments = 1
-let g:nord_underline = 1
 
 " Dont underline things in markdown
 au FileType markdown setlocal nospell
