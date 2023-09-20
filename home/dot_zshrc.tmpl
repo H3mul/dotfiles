@@ -164,7 +164,14 @@ alias cat=bat
 {{- else if lookPath "batcat" }}
 alias cat=batcat
 {{- end }}
+{{- if lookPath "zoxide" }}
+alias cd=z
+{{- end }}
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
 }
+
+{{- if lookPath "zoxide" }}
+eval "$(zoxide init zsh)"
+{{- end -}}
