@@ -1,1 +1,3 @@
 --theme="tokyonight_storm"
+--paging=never
+--style=plain
