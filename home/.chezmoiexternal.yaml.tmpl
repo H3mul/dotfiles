@@ -46,3 +46,10 @@
   executable: true
   refreshPeriod: "168h"
 {{- end }}
+
+{{- if lookPath "bat" }}
+".config/bat/themes/tokyonight_storm.tmTheme":
+  type: "file"
+  url: "https://github.com/folke/tokyonight.nvim/raw/main/extras/sublime/tokyonight_storm.tmTheme"
+  refreshPeriod: "168h"
+{{- end }}

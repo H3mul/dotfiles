@@ -1,0 +1,11 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+{{- if lookPath "bat" }}
+# bat config hash: {{ include "dot_config/bat/config" | sha256sum }}
+log_task "Updating bat cache"
+bat cache --build
+{{- end }}
