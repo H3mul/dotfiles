@@ -1,0 +1,3 @@
+[submodule "home/dot_config/external_nvim"]
+	path = home/dot_config/external_nvim
+	url = https://github.com/H3mul/LazyVim.git
