@@ -30,6 +30,15 @@
   stripComponents: 1
   refreshPeriod: "168h"
 
+{{ if .is_wsl }}
+".local/bin/win32yank.exe":
+  type: "archive-file"
+  url: "https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip"
+  executable: true
+  refreshPeriod: "168h"
+  path: "win32yank.exe"
+{{- end }}
+
 {{ if and .is_wsl .usegpg4win }}
 ".ssh/wsl2-ssh-pageant.exe":
   type: "file"
