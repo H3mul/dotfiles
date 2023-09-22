@@ -13,7 +13,7 @@ export SYSTEMD_EDITOR=$EDITOR
 {{ if and .is_wsl .usegpg4win -}}
 WIN_USERPROFILE_PATH=$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r' | tr '\\' '/' | sed 's#\:#\\:#')    
 GPG4WIN_CONFIG_PATH="${WIN_USERPROFILE_PATH}/AppData/Local/gnupg"    
-WSL2_SSH_PAGEANT_BIN="$HOME/.ssh/wsl2-ssh-pageant.exe"
+WSL2_SSH_PAGEANT_BIN="$HOME/.local/bin/wsl2-ssh-pageant.exe"
 
 # SSH Socket
 # Removing Linux SSH socket and replacing it by link to wsl2-ssh-pageant

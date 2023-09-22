@@ -36,7 +36,7 @@
 {{- end }}
 
 {{ if and .is_wsl .usegpg4win }}
-".ssh/wsl2-ssh-pageant.exe":
+".local/bin/wsl2-ssh-pageant.exe":
   type: "file"
   url: "https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe"
   executable: true
