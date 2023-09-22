@@ -57,9 +57,19 @@
   refreshPeriod: "168h"
 {{- end }}
 
+".local/bin/kubebox":
+  type: "file"
+  url: "https://github.com/astefanutti/kubebox/releases/download/v0.10.0/kubebox-linux"
+  executable: true
+  refreshPeriod: "168h"
+
+{{ $arch := .uname_arch }}
+{{- if eq $arch "aarch64" -}}
+{{ $arch = "arm64" }}
+{{- end -}}
 ".local/bin/kubecolor":
   type: archive-file
-  url: "https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Linux_{{ .uname_arch }}.tar.gz"
+  url: "https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Linux_{{ $arch }}.tar.gz"
   path: kubecolor
   refreshPeriod: "168h"
 
