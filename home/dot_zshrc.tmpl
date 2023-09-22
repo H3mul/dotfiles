@@ -166,6 +166,7 @@ alias cd=z
 {{- end }}
 {{- if lookPath "kubecolor" }}
 alias k=kubecolor
+compdef kubecolor=kubectl
 {{ end -}}
 
 timestamp () {
