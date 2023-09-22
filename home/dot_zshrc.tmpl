@@ -164,10 +164,6 @@ alias cat=bat
 {{- if lookPath "zoxide" }}
 alias cd=z
 {{- end }}
-{{- if lookPath "kubecolor" }}
-alias k=kubecolor
-compdef kubecolor=kubectl
-{{ end -}}
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
@@ -176,3 +172,33 @@ timestamp () {
 {{- if lookPath "zoxide" }}
 eval "$(zoxide init zsh)"
 {{- end -}}
+
+{{- $kube := "kubectl" -}}
+{{- if lookPath "kubecolor" }}
+{{- $kube = "kubecolor" }}
+alias k=kubecolor
+compdef kubecolor=kubectl
+{{ end -}}
+
+kubewatch () {
+  ns="${1-}"
+  [ -z "$ns" ] && ns_flag="-A" || ns_flag="-n"
+  watch -cwt -x zsh -c \
+    "output=\$(kubecolor --force-colors get events $ns_flag $ns --sort-by='{.lastTimestamp}');
+    (echo \$output | head -n 1);
+    (echo \$output | tail -n +2 | tac)"
+}
+_kubewatch () {
+  compadd $(kubectl get ns | tail -n +2 | awk '{ print $1 }')
+}
+compdef _kubewatch kubewatch
+alias kw=kubewatch
+
+fluxwatch () {
+  watch -cwt -x zsh -c \
+    "output=\$(flux get kustomizations);
+    (echo \$output | head -n 1);
+    (echo \$output | tail -n +2 | sort -k 4,4 -k 1,1)"
+}
+alias fw=fluxwatch
+
