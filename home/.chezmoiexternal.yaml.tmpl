@@ -1,23 +1,34 @@
+# Oh-My-Zsh plugins
+
 ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting":
   type: "archive"
   url: "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
-
 ".oh-my-zsh/custom/plugins/zsh-autosuggestions":
   type: "archive"
   url: "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
-
 ".oh-my-zsh/custom/plugins/fzf-tab":
   type: "archive"
   url: "https://github.com/Aloxaf/fzf-tab/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
+
+
+{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
+# fzf ubuntu install is broken, fix the missing file manually
+# https://bugs.launchpad.net/ubuntu/+source/fzf/+bug/1928670
+".fzf/key-bindings.zsh":
+  type: "file"
+  url: "https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh"
+  executable: true
+  refreshPeriod: "168h"
+{{- end }}
 
 ".tmux/plugins/tpm":
   type: "archive"
@@ -27,6 +38,8 @@
   refreshPeriod: "168h"
 
 {{ if .is_wsl }}
+# For nvim to sync yank buffer with windows clipboard - needs to be in WSL path
+# https://github.com/neovim/neovim/blob/fcfc87cb7727eb63265dc75476dc6ba56e0029c8/runtime/autoload/provider/clipboard.vim#L131
 ".local/bin/win32yank.exe":
   type: "archive-file"
   url: "https://github.com/equalsraf/win32yank/releases/latest/download/win32yank-x64.zip"
@@ -36,17 +49,10 @@
 {{- end }}
 
 {{ if and .is_wsl .usegpg4win }}
+# For using windows native gpg in wsl - see dot_profile
 ".local/bin/wsl2-ssh-pageant.exe":
   type: "file"
   url: "https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe"
-  executable: true
-  refreshPeriod: "168h"
-{{- end }}
-
-{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
-".fzf/key-bindings.zsh":
-  type: "file"
-  url: "https://github.com/junegunn/fzf/raw/master/shell/key-bindings.zsh"
   executable: true
   refreshPeriod: "168h"
 {{- end }}

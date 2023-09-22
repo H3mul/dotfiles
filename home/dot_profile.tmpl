@@ -11,13 +11,16 @@ export NVIM_HOME=$HOME/{{- .nvim_home }}
 export SYSTEMD_EDITOR=$EDITOR
 
 {{ if and .is_wsl .usegpg4win -}}
+# Use windows gpg agent socket - enables using yubikey in wsl
+# Largely based on:
+# https://jardazivny.medium.com/the-ultimate-guide-to-yubikey-on-wsl2-part-2-1d9546ef23a6
+
 WIN_USERPROFILE_PATH=$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r' | tr '\\' '/' | sed 's#\:#\\:#')    
 GPG4WIN_CONFIG_PATH="${WIN_USERPROFILE_PATH}/AppData/Local/gnupg"    
 WSL2_SSH_PAGEANT_BIN="$HOME/.local/bin/wsl2-ssh-pageant.exe"
 
 # SSH Socket
-# Removing Linux SSH socket and replacing it by link to wsl2-ssh-pageant
-# socket
+# Removing Linux SSH socket and replacing it by link to wsl2-ssh-pageant SSH socket
 export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
 if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
     rm -f "$SSH_AUTH_SOCK"
