@@ -140,7 +140,6 @@ alias h=history
 alias e=exit
 alias dc=docker-compose
 alias vim=nvim
-alias k=kubectl    
 alias t=go-task
 alias -g NUL="> /dev/null 2>&1"
 alias -g NE="2>/dev/null"
@@ -165,6 +164,9 @@ alias cat=bat
 {{- if lookPath "zoxide" }}
 alias cd=z
 {{- end }}
+{{- if lookPath "kubecolor" }}
+alias k=kubecolor
+{{ end -}}
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"

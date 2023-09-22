@@ -85,6 +85,7 @@ data:
   email: "{{ $email }}"
 
   osid: {{ $osid | quote }}
+  uname_arch: "{{ output "uname" "-m" | trim }}"
   is_wsl: {{ $wsl }}
   is_headless: {{ $headless }}
 
