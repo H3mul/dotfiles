@@ -173,6 +173,8 @@ timestamp () {
 eval "$(zoxide init zsh)"
 {{- end -}}
 
+{{- if lookPath "kubectl" }}
+
 {{- $kube := "kubectl" -}}
 {{- if lookPath "kubecolor" }}
 {{- $kube = "kubecolor" }}
@@ -194,11 +196,19 @@ _kubewatch () {
 compdef _kubewatch kubewatch
 alias kw=kubewatch
 
+{{ end }}
+
+{{- if lookPath "flux" }}
 fluxwatch () {
+  kustomization="${1-}"
   watch -cwt -x zsh -c \
-    "output=\$(flux get kustomizations);
+    "output=\$(flux get kustomization ${kustomization});
     (echo \$output | head -n 1);
     (echo \$output | tail -n +2 | sort -k 4,4 -k 1,1)"
 }
+_fluxwatch () {
+  compadd $(flux get kustomization | tail -n +2 | awk '{ print $1 }')
+}
+compdef _fluxwatch fluxwatch
 alias fw=fluxwatch
-
+{{ end }}
