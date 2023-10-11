@@ -130,12 +130,9 @@ bindkey '^S' sudo-command-line
 ########################
 
 # more here: https://grml.org/zsh/zsh-lovers.html
-alias l='ls -lFh'
-alias la='ls -lAFh'
-alias lr='ls -lRAFh'
-alias lt='ls -ltFh'
+alias l='ls -lF'
+alias la='ls -laF'
 alias ll='ls -l'
-alias ld='ls -ld .*'
 alias h=history
 alias e=exit
 alias dc=docker-compose
@@ -157,6 +154,7 @@ alias fd=fdfind
 {{ end -}}
 {{- if lookPath "eza" }}
 alias ls=eza
+alias lt='ls -laFT'
 {{- end }}
 {{- if lookPath "bat" }}
 alias cat=bat
