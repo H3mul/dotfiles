@@ -1,3 +1,8 @@
 {{ if ne .osid "linux-arch" -}}
 .chezmoiscripts/*-install-yay.sh
 {{- end }}
+
+{{ if or (not .is_wsl) (not .usegpg4win) }}
+.chezmoiscripts/*-deploy-windows-gpg-agent-conf.sh
+dot_gnupg/windows-gpg-agent.conf
+{{- end }}

@@ -1,0 +1,25 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+# windows gpg conf: {{ include "private_dot_gnupg/windows-gpg-agent.conf" | sha256sum }}
+
+gpg_conf_dir_win=$(cmd.exe /C "gpg --version" 2>&1 | grep -oP "Home: \K\S*")
+
+if [ $? -ne 0 ]; then
+    log_manual_action "gpg4win likely not installed (no gpg version output), skipping gpg-agent config deploy."
+    return
+fi
+
+gpg_conf_dir=$(wslpath $gpg_conf_dir_win)
+
+if [ ! -d ${gpg_conf_dir} ]; then
+    log_manual_action "gpg4win likely not installed (unable to locate conf directory $gpg_conf_dir), skipping gpg-agent config deploy."
+    return
+fi
+
+gpg_conf_file=$gpg_conf_dir/gpg-agent.conf
+log_task "Deploying gpg-agent-conf to $gpg_conf_file"
+cp ~/.gnupg/windows-gpg-agent.conf $gpg_conf_file
