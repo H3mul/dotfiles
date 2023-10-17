@@ -5,6 +5,15 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
 if ! command -v yay >/dev/null; then
+{{ if not (lookPath "git") }}
+{{ if eq .chezmoi.username "root" }}
+    sudo=""
+{{ else }}
+    sudo="sudo"
+{{ end }}
+    log_cmd $sudo pacman -Syu --noconfirm --needed git
+{{ end }}
+
     TMP_DIR=$(mktemp -d -t yay-XXXXXX)
     git clone https://aur.archlinux.org/yay.git --depth 1 $TMP_DIR
     cd $TMP_DIR

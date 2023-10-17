@@ -26,6 +26,10 @@ log_green() {
   log_color "1;32" "$@"
 }
 
+log_yellow() {
+  log_color "1;33" "$@"
+}
+
 log_task() {
   log_blue "🔃" "$@"
 }
@@ -36,7 +40,7 @@ log_cmd() {
 }
 
 log_manual_action() {
-  log_red "⚠️" "$@"
+  log_yellow "⚠️" "$@"
 }
 
 log_error() {

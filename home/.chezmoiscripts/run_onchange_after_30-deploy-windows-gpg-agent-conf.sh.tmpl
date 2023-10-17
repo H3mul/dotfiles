@@ -21,5 +21,8 @@ if [ ! -d ${gpg_conf_dir} ]; then
 fi
 
 gpg_conf_file=$gpg_conf_dir/gpg-agent.conf
-log_task "Deploying gpg-agent-conf to $gpg_conf_file"
-cp ~/.gnupg/windows-gpg-agent.conf $gpg_conf_file
+log_cmd cp ~/.gnupg/windows-gpg-agent.conf $gpg_conf_file
+log_cmd cmd.exe /C "gpg-connect-agent killagent /bye"
+log_cmd cmd.exe /C "gpg-connect-agent /bye"
+
+log_manual_action "WSL likely needs to be restarted to pick up the new gpg socket (run cmd wsl --shutdown)"
