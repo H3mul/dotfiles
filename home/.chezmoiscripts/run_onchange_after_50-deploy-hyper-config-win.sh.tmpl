@@ -1,0 +1,17 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+# windows hyper conf: {{ include "dot_hyper.js" | sha256sum }}
+
+{{ if lookPath "hyper" }}
+
+hyper_conf_dest=$(wslpath $(win_cmd "echo %APPDATA%\Hyper"))
+
+log_task Installing hyper.js to $hyper_conf_dest
+cp ~/.hyper.js "$hyper_conf_dest/"
+
+{{ end }}

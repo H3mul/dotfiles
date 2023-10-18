@@ -9,6 +9,8 @@
 
 {{ if not .is_wsl }}
 .chezmoiscripts/*-install-nerd-fonts-win.sh
+.chezmoiscripts/*-deploy-hyper-config-win.sh
+.hyper.js
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}

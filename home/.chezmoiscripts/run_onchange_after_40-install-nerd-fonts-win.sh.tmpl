@@ -3,6 +3,7 @@
 set -eu
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 {{ if or (lookPath "gsudo") (lookPath "gsudo.exe")}}
 function cleanup() {
@@ -10,10 +11,6 @@ function cleanup() {
     log_yellow "Ended gsudo elevation session"
 }
 trap cleanup ERR EXIT SIGINT SIGTERM
-
-function win_cmd () {
-    cmd.exe /C "$@" 2>/dev/null | tr -d '\r'
-}
 
 win_fonts_dir=$(wslpath $(win_cmd "echo %WINDIR%\Fonts" | sed 's/WINDOWS/Windows/'))
 win_fonts_reg_key="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
