@@ -4,5 +4,13 @@
 
 {{ if or (not .is_wsl) (not .usegpg4win) }}
 .chezmoiscripts/*-deploy-windows-gpg-agent-conf.sh
-dot_gnupg/windows-gpg-agent.conf
+.gnupg/windows-gpg-agent.conf
+{{- end }}
+
+{{ if not .is_wsl }}
+.chezmoiscripts/*-install-nerd-fonts-win.sh
+{{- end }}
+
+{{ if ne .osid "linux-termux" -}}
+.termux
 {{- end }}

@@ -19,13 +19,10 @@
   stripComponents: 1
   refreshPeriod: "168h"
 
-{{ if eq .osid "linux-termux" }}
-".termux/font.ttf":
-  type: "archive-file"
+".local/fonts/nerd":
+  type: "archive"
   url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DejaVuSansMono.zip"
   refreshPeriod: "168h"
-  path: "DejaVuSansMNerdFontMono-Regular.ttf"
-{{ end }}
 
 {{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
 # fzf ubuntu install is broken, fix the missing file manually

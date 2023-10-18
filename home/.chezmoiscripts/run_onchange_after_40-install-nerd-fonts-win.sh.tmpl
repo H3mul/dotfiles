@@ -1,0 +1,39 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+{{ if or (lookPath "gsudo") (lookPath "gsudo.exe")}}
+function cleanup() {
+    gsudo cache off
+    log_yellow "Ended gsudo elevation session"
+}
+trap cleanup ERR EXIT SIGINT SIGTERM
+
+function win_cmd () {
+    cmd.exe /C "$@" 2>/dev/null | tr -d '\r'
+}
+
+win_fonts_dir=$(wslpath $(win_cmd "echo %WINDIR%\Fonts" | sed 's/WINDOWS/Windows/'))
+win_fonts_reg_key="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+reg_exe=$(wslpath $(win_cmd "where reg"))
+
+log_yellow "Starting gsudo elevation session"
+gsudo cache on
+
+for font in ~/.local/fonts/nerd/*ttf; do
+    font_filename=$(basename $font)
+
+    font_name=$(fc-scan $font | grep -oP "fullname: \"\K[^\"]*")
+    [ -z "$font_name" ] && continue
+    [ -f "$win_fonts_dir/$font_filename" ] && continue
+
+    log_task "Installing font $font_name"
+    gsudo $reg_exe add "$win_fonts_reg_key" /v "$font_name" /t REG_SZ /d $font_filename /f
+    gsudo cp "$font" "$win_fonts_dir/"
+done
+
+{{ else }}
+    error "gsudo required to install nerd fonts to windows"
+{{ end }}
