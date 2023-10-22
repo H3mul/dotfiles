@@ -5,6 +5,8 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
+# {{ lookPath "gsudo" | sha256sum }}
+
 {{ if or (lookPath "gsudo") (lookPath "gsudo.exe")}}
 function cleanup() {
     gsudo cache off
@@ -32,5 +34,5 @@ for font in ~/.local/fonts/nerd/*ttf; do
 done
 
 {{ else }}
-    error "gsudo required to install nerd fonts to windows"
+    log_yellow "gsudo required to install nerd fonts to windows - ignoring"
 {{ end }}
