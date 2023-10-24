@@ -8,9 +8,13 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 # {{ lookPath "gsudo" | sha256sum }}
 
 {{ if or (lookPath "gsudo") (lookPath "gsudo.exe")}}
+elevated=0
 function cleanup() {
-    gsudo cache off
-    log_yellow "Ended gsudo elevation session"
+    gsudo cache off > /dev/null 2>&1
+    if [ ! "$elevated" -eq 0 ]; then 
+        log_yellow "Ended gsudo elevation session"
+        elevated=0
+    fi
 }
 trap cleanup ERR EXIT SIGINT SIGTERM
 
@@ -18,15 +22,18 @@ win_fonts_dir=$(wslpath $(win_cmd "echo %WINDIR%\Fonts" | sed 's/WINDOWS/Windows
 win_fonts_reg_key="HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
 reg_exe=$(wslpath $(win_cmd "where reg"))
 
-log_yellow "Starting gsudo elevation session"
-gsudo cache on
-
 for font in ~/.local/fonts/nerd/*ttf; do
     font_filename=$(basename $font)
 
     font_name=$(fc-scan $font | grep -oP "fullname: \"\K[^\"]*")
     [ -z "$font_name" ] && continue
     [ -f "$win_fonts_dir/$font_filename" ] && continue
+
+    if [ "$elevated" -eq 0 ]; then
+        log_yellow "Starting gsudo elevation session"
+        gsudo cache on > /dev/null 2>&1
+        elevated=1
+    fi
 
     log_task "Installing font $font_name"
     gsudo $reg_exe add "$win_fonts_reg_key" /v "$font_name" /t REG_SZ /d $font_filename /f
