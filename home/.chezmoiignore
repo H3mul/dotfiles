@@ -16,3 +16,8 @@
 {{ if ne .osid "linux-termux" -}}
 .termux
 {{- end }}
+
+{{ if .is_headless }}
+.chezmoiscripts/*-deploy-gtk4-themes-win.sh
+.config/gtk-4.0
+{{- end }}
