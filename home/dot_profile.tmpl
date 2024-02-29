@@ -10,6 +10,12 @@ export EDITOR='nvim'
 export NVIM_HOME=$HOME/{{- .nvim_home }}
 export SYSTEMD_EDITOR=$EDITOR
 
+{{ if hasPrefix "linux" .osid -}}
+# use gpg ssh agent
+SSH_AGENT_PID=""
+SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+{{- end }}
+
 {{ if and .is_wsl .usegpg4win -}}
 # Use windows gpg agent socket - enables using yubikey in wsl
 # Largely based on:

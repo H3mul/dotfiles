@@ -1,4 +1,4 @@
-{{ if ne .osid "linux-arch" -}}
+{{ if or (ne .osid "linux-endeavouros") (ne .osid "linux-arch")  -}}
 .chezmoiscripts/*-install-yay.sh
 {{- end }}
 
