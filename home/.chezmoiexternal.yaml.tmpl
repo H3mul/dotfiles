@@ -34,12 +34,14 @@
   refreshPeriod: "168h"
 {{- end }}
 
+{{- if lookPath "tmux" }}
 ".tmux/plugins/tpm":
   type: "archive"
   url: "https://github.com/tmux-plugins/tpm/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
+{{- end }}
 
 {{ if .is_wsl }}
 # For nvim to sync yank buffer with windows clipboard - needs to be in WSL path
@@ -97,8 +99,10 @@
   include: [ "*/themes/**" ]
   refreshPeriod: "168h"
 
+  {{- if lookPath "tilix" }}
 ".config/tilix/schemes/tokyo-night.json":
   type: "file"
   url: "https://github.com/kevin-nel/tokyo-night-tilix-black-box-theme/raw/main/tokyo-night-storm.json"
   refreshPeriod: "168h"
+  {{- end }}
 {{- end }}

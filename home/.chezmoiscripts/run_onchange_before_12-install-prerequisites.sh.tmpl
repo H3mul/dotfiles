@@ -46,7 +46,7 @@ log_task "Installing packages: ${packages[*]}"
     ) 
     log_cmd pkg update
     log_cmd pkg install -y "${packages[@]}"
-{{ else if eq .osid "linux-arch" }}
+{{ else if .is_arch }}
     packages+=(fd sudo base-devel)
     {{ if lookPath "yay" }}
         log_cmd yay -Syu --noconfirm --sudoloop --needed "${packages[@]}"
