@@ -2,7 +2,7 @@
 .chezmoiscripts/*-install-yay.sh
 {{- end }}
 
-{{ if not (hasPrefix "linux" .osid) }}
+{{ if or (not (hasPrefix "linux" .osid)) (eq .osid "linux-termux") }}
 .gnupg/gpg-agent.conf
 {{- end }}
 
