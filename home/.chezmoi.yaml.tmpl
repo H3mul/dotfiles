@@ -71,7 +71,7 @@
 {{-   end -}}
 {{-   $question := "❔ Install optional packages (y/n)" -}}
 {{-   $answer := promptString $question ($install_optional_apps | toString) -}}
-{{-   $install_optional_apps = regexMatch "^[yY]$" $answer -}}
+{{-   $install_optional_apps = regexMatch "^([yY]|true)$" $answer -}}
 {{-   writeToStdout (printf "✅ Install optional packages set as '%s'\n" ($install_optional_apps | toString)) -}}
 {{-   writeToStdout "\n💡 Tip: you can always make chezmoi ask this again by running `chezmoi init` without `--force`.\n" -}}
 {{- end -}}
@@ -96,9 +96,9 @@ data:
   osid: {{ $osid | quote }}
   uname_arch: "{{ output "uname" "-m" | trim }}"
   is_wsl: {{ $wsl }}
-  is_headless: {{ $headless }}
+  usegpg4win: {{ $wsl }}
+  is_headless: {{ or $headless $wsl }}
   is_arch: {{ $is_arch }}
+  install_optional_apps: {{ $install_optional_apps }}
 
   nvim_home: ".config/nvim"
-  usegpg4win: false
-  install_optional_apps: {{ $install_optional_apps }}

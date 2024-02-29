@@ -10,7 +10,7 @@ export EDITOR='nvim'
 export NVIM_HOME=$HOME/{{- .nvim_home }}
 export SYSTEMD_EDITOR=$EDITOR
 
-{{ if and (hasPrefix "linux" .osid) (ne .osid "linux-termux") }}
+{{ if and (hasPrefix "linux" .osid) (ne .osid "linux-termux") (not .is_wsl) }}
 # use gpg ssh agent
 export SSH_AGENT_PID=""
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
