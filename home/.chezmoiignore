@@ -2,6 +2,10 @@
 .chezmoiscripts/*-install-yay.sh
 {{- end }}
 
+{{ if not (hasPrefix "linux" .osid) }}
+.gnupg/gpg-agent.conf
+{{- end }}
+
 {{ if or (not .is_wsl) (not .usegpg4win) }}
 .chezmoiscripts/*-deploy-windows-gpg-agent-conf.sh
 .gnupg/windows-gpg-agent.conf

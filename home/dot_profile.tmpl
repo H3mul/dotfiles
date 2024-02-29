@@ -12,8 +12,8 @@ export SYSTEMD_EDITOR=$EDITOR
 
 {{ if hasPrefix "linux" .osid -}}
 # use gpg ssh agent
-SSH_AGENT_PID=""
-SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+export SSH_AGENT_PID=""
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
 {{- end }}
 
 {{ if and .is_wsl .usegpg4win -}}
