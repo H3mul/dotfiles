@@ -26,7 +26,7 @@ setopt no_share_history
 unsetopt beep
 set -o ignoreeof
 
-{{ if eq .osid "linux-arch" -}}
+{{ if .is_arch -}}
 source /usr/share/fzf/key-bindings.zsh
 {{ end -}}
 {{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
