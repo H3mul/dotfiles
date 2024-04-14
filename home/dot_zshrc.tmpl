@@ -31,6 +31,7 @@ source /usr/share/fzf/key-bindings.zsh
 {{ end -}}
 {{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
 source $HOME/.fzf/key-bindings.zsh
+source <(kubectl completion zsh)
 {{ end -}}
 
 {{ $fd := "fd" }}
