@@ -214,6 +214,14 @@ compdef _fluxwatch fluxwatch
 alias fw=fluxwatch
 {{ end }}
 
+{{- if lookPath "adb" }}
+function adbtext() {
+  while read -r line; do
+    adb shell input text ${(q)${line// /%s}}
+  done
+}
+{{ end }}
+
 {{- if .is_wsl }}
 function code() {
   setsid nohup Code.exe --remote wsl+default "$(realpath ${1-.})" >/dev/null 2>&1
