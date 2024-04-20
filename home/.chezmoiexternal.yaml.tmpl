@@ -106,3 +106,10 @@
   refreshPeriod: "168h"
   {{- end }}
 {{- end }}
+
+{{- if lookPath "k9s" }}
+".config/k9s/skins/tokyonight.yaml":
+  type: "file"
+  url: "https://github.com/axkirillov/k9s-tokyonight/raw/main/skin.yml"
+  refreshPeriod: "168h"
+{{- end }}

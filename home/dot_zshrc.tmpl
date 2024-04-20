@@ -165,6 +165,9 @@ alias cat=bat
 {{- if lookPath "zoxide" }}
 alias cd=z
 {{- end }}
+{{- if lookPath "k9s" }}
+alias kns=k9s
+{{- end }}
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
