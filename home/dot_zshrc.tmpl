@@ -227,6 +227,6 @@ function adbtext() {
 
 {{- if .is_wsl }}
 function code() {
-  setsid nohup Code.exe --remote wsl+default "$(realpath ${1-.})" >/dev/null 2>&1
+  setsid nohup Code.exe --remote wsl+default $@
 }
 {{ end }}
