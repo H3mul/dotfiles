@@ -45,5 +45,6 @@ extensions=(
 
 log_task Installing all VS Code extensions...
 log_cmd code "${extensions[@]/#/--install-extension=}"
+log_success Done
 
 {{ end }}

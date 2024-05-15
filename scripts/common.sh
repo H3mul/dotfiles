@@ -47,6 +47,10 @@ log_error() {
   log_red "❌" "$@"
 }
 
+log_success() {
+  log_green "✅" "$@"
+}
+
 error() {
   log_error "$@"
   exit 1
