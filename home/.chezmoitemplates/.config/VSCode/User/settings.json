@@ -1,0 +1,52 @@
+{
+  "workbench.colorTheme": "Tokyo Night Storm",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.wordWrap": "off",
+  "explorer.confirmDelete": false,
+  "editor.formatOnPaste": true,
+  "css.format.preserveNewLines": false,
+  "vim.useSystemClipboard": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDragAndDrop": false,
+  "editor.insertSpaces": true,
+  "files.associations": {
+    "*.yml": "yaml",
+    "*.yaml": "yaml"
+  },
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "j"
+      ],
+      "after": [
+        "g",
+        "j"
+      ]
+    },
+    {
+      "before": [
+        "k"
+      ],
+      "after": [
+        "g",
+        "k"
+      ]
+    }
+  ],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vim.handleKeys": {
+    "<C-f>": false,
+    "<C-p>": false,
+    "<C-n>": false,
+    "<C-d>": true,
+    "<C-s>": false,
+    "<C-z>": false
+  },
+  "workbench.editorAssociations": {
+    "*.pdf": "default"
+  }
+}
