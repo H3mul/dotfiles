@@ -31,11 +31,11 @@ log_yellow() {
 }
 
 log_task() {
-  log_blue "🔃" "$@"
+  log_blue "*️⃣" "$@"
 }
 
 log_cmd() {
-  log_task "$@"
+  log_blue "▶️" "$@"
   $@
 }
 
