@@ -8,11 +8,12 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 # vscode config hash: {{ include "dot_config/VSCode/User/modify_settings.json" | sha256sum }}
 # vscode modify_settings hash: {{ include ".chezmoitemplates/.config/VSCode/User/settings.json" | sha256sum }}
 
-{{ if lookPath "code.exe" }}
+{{ if lookPath "code" }}
 
 vscode_windows_settings_path=$(wslpath $(win_cmd "echo %APPDATA%\Code\User\settings.json"))
 
-log_task copying merged VS Code config back to Windows
-cp ~/.config/VSCode/User/settings.json "$vscode_windows_settings_path"
+log_task copying Windows VS Code config to WSL for modification
+mkdir -p ~/.config/VSCode/User
+cp "$vscode_windows_settings_path" ~/.config/VSCode/User/settings.json
 
 {{ end }}
