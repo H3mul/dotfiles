@@ -30,3 +30,7 @@
 {{ if eq (lookPath "k9s") "" }}
 .config/k9s
 {{- end }}
+
+{{ if eq (lookPath "code") "" }}
+.config/VSCode
+{{- end }}
