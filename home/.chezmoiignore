@@ -15,7 +15,6 @@
 .chezmoiscripts/*-install-nerd-fonts-win.sh
 .chezmoiscripts/*-deploy-hyper-config-win.sh
 .hyper.js
-.chezmoiscripts/*-fetch-windows-vscode-config-for-modification.sh
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}
@@ -33,4 +32,8 @@
 
 {{ if eq (lookPath "code") "" }}
 .config/VSCode
+.chezmoiscripts/install-vscode-extensions.sh
+  {{ if not .is_wsl }}
+.chezmoiscripts/fetch-windows-vscode*.sh
+  {{- end }}
 {{- end }}

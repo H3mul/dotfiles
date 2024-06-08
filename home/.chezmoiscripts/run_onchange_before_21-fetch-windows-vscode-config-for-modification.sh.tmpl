@@ -12,8 +12,10 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 vscode_windows_settings_path=$(wslpath $(win_cmd "echo %APPDATA%\Code\User\settings.json"))
 
-log_task copying Windows VS Code config to WSL for modification
-mkdir -p ~/.config/VSCode/User
-cp "$vscode_windows_settings_path" ~/.config/VSCode/User/settings.json
+if [ -f "$vscode_windows_settings_path" ]; then
+    log_task copying Windows VS Code config to WSL for modification
+    mkdir -p ~/.config/VSCode/User
+    cp "$vscode_windows_settings_path" ~/.config/VSCode/User/settings.json
+fi
 
 {{ end }}
