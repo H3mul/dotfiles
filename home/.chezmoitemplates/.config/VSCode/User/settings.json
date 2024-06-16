@@ -48,5 +48,6 @@
   },
   "workbench.editorAssociations": {
     "*.pdf": "default"
-  }
+  },
+  "terminal.integrated.fontSize": 12
 }
