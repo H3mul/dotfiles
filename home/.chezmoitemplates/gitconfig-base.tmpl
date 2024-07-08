@@ -1,0 +1,36 @@
+[init]
+    defaultBranch = main
+
+[user]
+    name = {{ .name }}
+    email = {{ .email }}
+
+[alias]
+    s = status
+    d = diff
+    ds = diff --staged
+    c = commit
+    ca = commit --amend
+    can = commit --amend --no-edit
+    co = checkout
+    r = restore --staged
+    rpull = pull --rebase --autostash
+    ls   = log --oneline --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+    lsa  = log --graph --all --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+
+[pull]
+	rebase = true
+    
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[lfs]
+    pruneverifyremotealways = true
+
+{{ if eq .osid "linux-termux" }}
+[safe]
+    directory = *
+{{ end }}

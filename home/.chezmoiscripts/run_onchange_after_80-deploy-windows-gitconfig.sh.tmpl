@@ -1,0 +1,14 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+# {{ include "dot_gitconfig.tmpl" | sha256sum }}
+# {{ include "dot_gitconfig-windows.tmpl" | sha256sum }}
+
+gitconfig_dest=$(wslpath $(win_cmd "echo %USERPROFILE%"))
+
+log_task Deploying .gitconfig to $gitconfig_dest
+cp ~/.gitconfig-windows "$gitconfig_dest/.gitconfig"

@@ -15,6 +15,9 @@
 .chezmoiscripts/*-install-nerd-fonts-win.sh
 .chezmoiscripts/*-deploy-hyper-config-win.sh
 .hyper.js
+
+.gitconfig-windows
+.chezmoiscripts/*-deploy-windows-gitconfig.sh
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}
