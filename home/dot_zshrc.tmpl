@@ -168,6 +168,9 @@ alias cd=z
 {{- if lookPath "k9s" }}
 alias kns=k9s
 {{- end }}
+{{- if lookPath "proot-distro" }}
+alias arch='proot-distro login archlinux --termux-home --user hemul --work-dir ${PWD}'
+{{- end }}
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
