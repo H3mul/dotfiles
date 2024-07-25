@@ -1,0 +1,8 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+log_task Importing gpg key from Github for user {{ .github_user }}
+curl https://github.com/{{ .github_user }}.gpg | gpg --import
