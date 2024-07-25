@@ -1,6 +1,7 @@
 {{- /* Defaults */ -}}
 {{- $name := "Phillip Dykman" -}}
 {{- $email := "phil.d324@gmail.com" -}}
+{{- $github_user := "h3mul" -}}
 {{- $install_optional_apps := false -}}
 
 {{- /* Pull data from chezmoi config */ -}}
@@ -9,6 +10,9 @@
 {{- end -}}
 {{- if hasKey . "email" -}}
 {{-   $email = .email -}}
+{{- end -}}
+{{- if hasKey . "github_user" -}}
+{{-   $github_user = .github_user -}}
 {{- end -}}
 {{- if hasKey . "install_optional_apps" -}}
 {{-   $install_optional_apps = .install_optional_apps -}}
@@ -69,6 +73,9 @@
 {{-       exit 1 -}}
 {{-     end -}}
 {{-   end -}}
+{{-   $question := "❔ What is your Github user? (leave empty if none)" -}}
+{{-   $answer := promptString $question ($github_user | toString) -}}
+{{-   $github_user = $answer -}}
 {{-   $question := "❔ Install optional packages (y/n)" -}}
 {{-   $answer := promptString $question ($install_optional_apps | toString) -}}
 {{-   $install_optional_apps = regexMatch "^([yY]|true)$" $answer -}}
@@ -92,6 +99,7 @@ status:
 data:
   name: "{{ $name }}"
   email: "{{ $email }}"
+  github_user: "{{ $github_user }}"
 
   osid: {{ $osid | quote }}
   uname_arch: "{{ output "uname" "-m" | trim }}"

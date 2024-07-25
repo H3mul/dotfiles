@@ -1,0 +1,18 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+
+{{if .github_user }}
+
+log_task Syncing Github user {{ .github_user }} ssh keys with authorized_keys file
+
+{{- range gitHubKeys .github_user }}
+# onchange key: {{ .Key | sha256sum }}
+grep -q "{{ .Key }}" ~/.ssh/authorized_keys || \
+    (echo "Added:"; echo "{{ .Key }}"; echo ""; echo "{{ .Key }}" >> ~/.ssh/authorized_keys)
+{{- end }}
+
+{{- end }}
