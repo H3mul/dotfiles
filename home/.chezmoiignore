@@ -33,9 +33,16 @@
 .config/k9s
 {{- end }}
 
+{{ if and (eq (lookPath "code") "") (eq (lookPath "code-server") "")}}
+.chezmoiscripts/install-vscode-extensions.sh
+{{- end }}
+
+{{ if eq (lookPath "code-server") "" }}
+~/.local/share/code-server
+{{- end }}
+
 {{ if eq (lookPath "code") "" }}
 .config/VSCode
-.chezmoiscripts/install-vscode-extensions.sh
   {{ if not .is_wsl }}
 .chezmoiscripts/fetch-windows-vscode*.sh
   {{- end }}

@@ -4,39 +4,47 @@ set -eu
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
+code=""
 {{ if lookPath "code" }}
-
-# Result of `code --list-extensions`
-extensions=(
-    cschlosser.doxdocgen
-    esphome.esphome-vscode
-    mark-wiemer.vscode-autohotkey-plus-plus
-    ms-azuretools.vscode-docker
-    ms-dotnettools.vscode-dotnet-runtime
-    ms-kubernetes-tools.vscode-kubernetes-tools
-    ms-python.debugpy
-    ms-python.isort
-    ms-python.python
-    ms-toolsai.jupyter
-    ms-toolsai.jupyter-keymap
-    ms-toolsai.jupyter-renderers
-    ms-toolsai.vscode-jupyter-cell-tags
-    ms-toolsai.vscode-jupyter-slideshow
-    ms-vscode.cmake-tools
-    ms-vscode.cpptools-themes
-    rangav.vscode-thunder-client
-    redhat.vscode-yaml
-    robbowen.synthwave-vscode
-    signageos.signageos-vscode-sops
-    slevesque.shader
-    twxs.cmake
-    yzhang.markdown-all-in-one
-    vscodevim.vim
-    enkia.tokyo-night   
-)
-
-log_task Installing all VS Code extensions...
-log_cmd code "${extensions[@]/#/--install-extension=}"
-log_success Done
-
+code="code"
 {{ end }}
+{{ if lookPath "code-server" }}
+code="code-server"
+{{ end }}
+
+if [ ! -z "${code}" ]; then
+
+    # Result of `code --list-extensions`
+    extensions=(
+        cschlosser.doxdocgen
+        esphome.esphome-vscode
+        mark-wiemer.vscode-autohotkey-plus-plus
+        ms-azuretools.vscode-docker
+        ms-dotnettools.vscode-dotnet-runtime
+        ms-kubernetes-tools.vscode-kubernetes-tools
+        ms-python.debugpy
+        ms-python.isort
+        ms-python.python
+        ms-toolsai.jupyter
+        ms-toolsai.jupyter-keymap
+        ms-toolsai.jupyter-renderers
+        ms-toolsai.vscode-jupyter-cell-tags
+        ms-toolsai.vscode-jupyter-slideshow
+        ms-vscode.cmake-tools
+        ms-vscode.cpptools-themes
+        rangav.vscode-thunder-client
+        redhat.vscode-yaml
+        robbowen.synthwave-vscode
+        signageos.signageos-vscode-sops
+        slevesque.shader
+        twxs.cmake
+        yzhang.markdown-all-in-one
+        vscodevim.vim
+        enkia.tokyo-night   
+    )
+
+    log_task Installing all VS Code extensions...
+    log_cmd $code "${extensions[@]/#/--install-extension=}"
+    log_success Done
+
+fi
