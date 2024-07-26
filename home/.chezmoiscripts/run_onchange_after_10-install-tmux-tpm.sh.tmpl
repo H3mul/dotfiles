@@ -4,8 +4,7 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
 # If the plugins aren't installed, only tpm will be in the plugins dir
-plugins_path=$HOME/.tmux/plugins
-if [ ! "$(ls -1 ${plugins_path} | wc -l)" -gt "1" ]; then
+if [ -f ~/.tmux/plugins/tpm/scripts/install_plugins.sh ]; then
     log_task "Installing Tmux TPM plugins"
-    ${plugins_path}/tpm/scripts/install_plugins.sh
+    ~/.tmux/plugins/tpm/scripts/install_plugins.sh || true
 fi

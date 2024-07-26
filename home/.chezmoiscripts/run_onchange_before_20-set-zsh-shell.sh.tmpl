@@ -11,5 +11,5 @@ set -eu
 {{ if eq .osid "linux-termux" -}}
     chsh -s zsh || true
 {{- else -}}
-    $sudo chsh -s $(chsh -l | grep zsh | head -n 1) $USER || true
+    $sudo chsh -s $(chsh -l | grep zsh | head -n 1) $LOGNAME || true
 {{ end }}
