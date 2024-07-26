@@ -2,8 +2,14 @@
 
 set -eu
 
+{{ if eq .chezmoi.username "root" }}
+    sudo=""
+{{ else }}
+    sudo="sudo"
+{{ end }}
+
 {{ if eq .osid "linux-termux" -}}
-    chsh -s zsh
+    chsh -s zsh || true
 {{- else -}}
-    chsh -s $(chsh -l | grep zsh | head -n 1)
+    $sudo chsh -s $(chsh -l | grep zsh | head -n 1) $USER || true
 {{ end }}
