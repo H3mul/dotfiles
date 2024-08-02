@@ -18,6 +18,7 @@
 
 .gitconfig-windows
 .chezmoiscripts/*-deploy-windows-gitconfig.sh
+.chezmoiscripts/*-windows-vscode-config-for-modification.sh
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}
@@ -34,16 +35,17 @@
 {{- end }}
 
 {{ if and (eq (lookPath "code") "") (eq (lookPath "code-server") "")}}
-.chezmoiscripts/install-vscode-extensions.sh
+.chezmoiscripts/*-install-vscode-extensions.sh
 {{- end }}
 
 {{ if eq (lookPath "code-server") "" }}
 ~/.local/share/code-server
 {{- end }}
 
-{{ if eq (lookPath "code") "" }}
+{{ if eq (lookPath "code-oss") "" }}
+.config/Code\ -\ OSS
+{{- end }}
+
+{{ if or (lookPath "code-oss") (eq (lookPath "code") "") }}
 .config/VSCode
-  {{ if not .is_wsl }}
-.chezmoiscripts/fetch-windows-vscode*.sh
-  {{- end }}
 {{- end }}
