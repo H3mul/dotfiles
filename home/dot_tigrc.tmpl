@@ -1,0 +1,39 @@
+# Options
+
+set refresh-interval = 60
+set refresh-mode = periodic
+set line-graphics = utf-8
+set truncation-delimiter = utf-8
+set tab-size = 4
+set mouse = true
+set focus-child = no
+set ignore-case = smart-case
+
+set main-view = id date:relative-compact author commit-title:graph=yes,refs=yes
+
+# Keybinds
+
+bind generic g  none
+bind generic gg move-first-line
+bind generic gj next
+bind generic gk previous
+bind generic gp parent
+bind generic gP back
+bind generic gn view-next
+
+bind main    G move-last-line
+bind generic G move-last-line
+
+# Colors
+
+color cursor black green bold
+color status white default bold
+color search-result white yellow
+color date magenta default
+color author white default
+color header white black
+color title-focus green black bold
+color title-blur black green bold
+color graph-commit red default
+color id green default bold
+color search-result black red bold

@@ -49,3 +49,7 @@
 {{ if or (lookPath "code-oss") (eq (lookPath "code") "") }}
 .config/VSCode
 {{- end }}
+
+{{ if eq (lookPath "tig") "" }}
+~/.tigrc
+{{- end }}
