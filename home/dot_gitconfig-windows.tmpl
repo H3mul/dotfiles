@@ -7,3 +7,8 @@
 	autocrlf = false
     fileMode = false
 	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+
+	# Avoid issues when sharing git index with WSL
+	# https://stackoverflow.com/questions/74844900/functional-differences-between-git-for-windows-and-git-in-wsl
+	checkstat = minimal
+	trustctime = false
