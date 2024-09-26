@@ -31,7 +31,7 @@
 {{- $interactive := and stdinIsATTY (not $chezmoiForce) -}}
 {{- $headless := or (env "SSH_CLIENT" | not | not) (not (or (env "DISPLAY") (env "WAYLAND_DISPLAY"))) -}}
 {{- $wsl := or (env "WSL_DISTRO_NAME") (env "IS_WSL") | not | not -}}
-{{- $is_arch := or (eq $osid "linux-endeavouros") (eq $osid "linux-arch") -}}
+{{- $is_arch := or (eq $osid "linux-archarm") (or (eq $osid "linux-endeavouros") (eq $osid "linux-arch"))  -}}
 
 {{- if $interactive -}}
 {{-   range $i := until 99 -}}
