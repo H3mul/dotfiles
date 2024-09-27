@@ -40,9 +40,9 @@ if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
         echo >&2 "WARNING: $WSL2_SSH_PAGEANT_BIN is not executable."
     fi
 fi
+
 # GPG Socket
 # Removing Linux GPG Agent socket and replacing it by link to wsl2-ssh-pageant GPG socket
-
 export GPG_AGENT_SOCK="$(gpgconf --list-dir agent-socket)"
 if ! ss -a | grep -q "$GPG_AGENT_SOCK"; then
     rm -rf "$GPG_AGENT_SOCK"
