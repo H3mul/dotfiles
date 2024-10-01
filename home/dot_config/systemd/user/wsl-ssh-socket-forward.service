@@ -1,0 +1,8 @@
+[Unit]
+Description=WSL2 SSH Pageant forwarder for SSH agent socket
+
+[Install]
+WantedBy=default.target
+
+[Service]
+ExecStart=/home/hemul/.local/bin/wsl-ssh-pageant-socket.sh ssh
