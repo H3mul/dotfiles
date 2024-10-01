@@ -1,0 +1,17 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+{{ if .usesystemd }}
+
+# {{ include "dot_config/systemd/user/wsl-gpg-agent-socket-forward.service" | sha256sum }}
+# {{ include "dot_config/systemd/user/wsl-ssh-agent-socket-forward.service" | sha256sum }}
+
+log_task Enabling/starting systemd WSL pageant forwarder for GPG and SSH agents...
+systemctl --user daemon-reload
+systemctl --user enable --now wsl-gpg-agent-socket-forward.service
+systemctl --user enable --now wsl-ssh-agent-socket-forward.service
+
+{{- end }}
