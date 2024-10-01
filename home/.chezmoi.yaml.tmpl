@@ -103,7 +103,9 @@ data:
 
   osid: {{ $osid | quote }}
   uname_arch: "{{ output "uname" "-m" | trim }}"
+
   is_wsl: {{ $wsl }}
+  usesystemd: {{ contains "enabled" (output "bash" "-c" "systemctl >/dev/null 2>&1 && echo 'enabled' || true") }}
   usegpg4win: {{ $wsl }}
   is_headless: {{ or $headless $wsl }}
   is_arch: {{ $is_arch }}

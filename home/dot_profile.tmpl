@@ -20,20 +20,19 @@ export GPG_TTY=$(tty)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 {{- end }}
 
-{{ if and .is_wsl .usegpg4win -}}
-
+{{ if and (and .is_wsl .usegpg4win) (not .usesystemd) -}}
 
 # SSH Socket
 # Removing Linux SSH socket and replacing it by link to wsl2-ssh-pageant SSH socket
 export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
 if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
-   # (nohup ~/.local/bin/wsl-gpg-agent-socket.sh ssh >/dev/null 2>&1 &)
+   (nohup ~/.local/bin/wsl-ssh-pageant-socket.sh ssh >/dev/null 2>&1 &)
 fi
 
 # GPG Socket
 # Removing Linux GPG Agent socket and replacing it by link to wsl2-ssh-pageant GPG socket
 export GPG_AGENT_SOCK="$(gpgconf --list-dir agent-socket)"
 if ! ss -a | grep -q "$GPG_AGENT_SOCK"; then
-    # (nohup ~/.local/bin/wsl-gpg-agent-socket.sh gpg >/dev/null 2>&1 &)
+    (nohup ~/.local/bin/wsl-ssh-pageant-socket.sh gpg >/dev/null 2>&1 &)
 fi
 {{- end -}}
