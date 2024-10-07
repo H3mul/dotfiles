@@ -95,8 +95,8 @@
 ".local/share/themes":
   type: "archive"
   url: "https://github.com/Fausto-Korpsvart/Tokyo-Night-GTK-Theme/archive/master.tar.gz"
-  stripComponents: 2
-  include: [ "*/themes/**" ]
+  stripComponents: 3
+  include: [ "*/themes/src/**" ]
   refreshPeriod: "168h"
 
   {{- if lookPath "tilix" }}
