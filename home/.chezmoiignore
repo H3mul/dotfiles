@@ -30,8 +30,7 @@
 {{- end }}
 
 {{ if .is_headless }}
-.chezmoiscripts/*-deploy-gtk4-themes-win.sh
-.config/gtk-4.0
+.chezmoiscripts/*-install-gtk-theme.sh
 {{- end }}
 
 {{ if eq (lookPath "k9s") "" }}
@@ -56,4 +55,8 @@
 
 {{ if eq (lookPath "tig") "" }}
 ~/.tigrc
+{{- end }}
+
+{{ if not .is_arch }}
+~/.custom_pkgbuilds
 {{- end }}

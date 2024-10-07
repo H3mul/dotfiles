@@ -1,0 +1,10 @@
+#!{{ lookPath "bash" }}
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+# custom pkgbuild repo hash: {{ output "git" "-C" .chezmoi.workingTree "submodule" "status" "home/dot_custom_pkgbuilds" }}
+
+cd ~/.custom_pkgbuilds/tokyonight-gtk-theme-git
+
+log_task Installing Tokyonight GTK theme...
+makepkg -si --needed --noconfirm
