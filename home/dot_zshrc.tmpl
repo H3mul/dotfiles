@@ -129,6 +129,9 @@ bindkey '^[j' down-line-or-beginning-search
 bindkey '^S' sudo-command-line
 
 ########################
+if [[ -t 2 ]] && [[ -z "${NO_COLOR-}" ]] && [[ "${TERM-}" != "dumb" ]]; then
+    NOFORMAT='\033[0m' RED='\033[0;31m' GREEN='\033[0;32m' ORANGE='\033[0;33m' BLUE='\033[0;34m' PURPLE='\033[0;35m' CYAN='\033[0;36m' YELLOW='\033[1;33m'
+fi
 
 # more here: https://grml.org/zsh/zsh-lovers.html
 alias l='ls -l'
@@ -227,3 +230,26 @@ function adbtext() {
   done
 }
 {{ end }}
+
+function ssh-luks-unlock() {
+  ssh_target="${1-}"
+  force_interactive="${2-}"
+  ssh_command=(ssh "root@${ssh_target}" -p 222)
+
+  passphrase=""
+  if [ -z "${force_interactive}" ] && [ -f "$HOME/keys/${ssh_target}-unlock-passphrase.gpg" ]; then
+    echo "Decrypting unlock passphrase..."
+    passphrase=$(gpg -d "$HOME/keys/${ssh_target}-unlock-passphrase.gpg" 2>/dev/null)
+  fi
+
+  if [ ! -z ${passphrase} ] && [ -z "${force_interactive}" ]; then
+    echo "Unlocking luks over ssh with passhphrase..."
+    echo "${passphrase}" | "${ssh_command[@]}" console_auth >/dev/null 2>&1
+  else
+    echo "Starting interactive ssh session..."
+    "${ssh_command[@]}"
+  fi
+
+  echo "Done"
+}
+
