@@ -60,3 +60,8 @@
 {{ if not .is_arch }}
 ~/.custom_pkgbuilds
 {{- end }}
+
+{{ if eq (lookPath "bat") "" }}
+~/.config/bat
+.chezmoiscripts/*-run-bat-build-cache.sh
+{{- end }}
