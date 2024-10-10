@@ -1,0 +1,32 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+# windows-terminal settings hashes:
+{{- range $file := glob (joinPath .chezmoi.workingTree "dot_config/windows-terminal/*/**") }}
+# {{ include "$file" | sha256sum }}
+{{- end }}
+
+TERMINAL_SETTINGS_FILE_WIN=$(win_path_to_wsl "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json")
+
+if [ -f "${TERMINAL_SETTINGS_FILE_WIN}" ]; then
+    log_task Adding color schemes to windows terminal...
+    
+    defaultSchemeName=""
+    for filename in ~/.config/windows-terminal/color-schemes/*; do
+        if [ -z "${defaultSchemeName}" ]; then
+            defaultSchemeName=$(jq -r '.name' "${filename}")
+        fi
+        jq  '.schemes |= (. + [input] | unique)' "${TERMINAL_SETTINGS_FILE_WIN}" "${filename}" | sponge "${TERMINAL_SETTINGS_FILE_WIN}"
+    done
+
+    if [ ! -z "${defaultSchemeName}" ]; then
+        log_task "Setting the default color scheme to the first one ($defaultSchemeName)"
+        jq --arg colorschemename "${defaultSchemeName}" '.profiles.defaults.colorScheme = $colorschemename' "${TERMINAL_SETTINGS_FILE_WIN}" | sponge "${TERMINAL_SETTINGS_FILE_WIN}"
+    fi
+fi
+
+

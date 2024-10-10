@@ -23,6 +23,9 @@
 .gitconfig-windows
 .chezmoiscripts/*-deploy-windows-gitconfig.sh
 .chezmoiscripts/*-windows-vscode-config-for-modification.sh
+
+.config/windows-terminal
+.chezmoiscripts/*-wsl-deploy-windows-terminal-settings.sh
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}
