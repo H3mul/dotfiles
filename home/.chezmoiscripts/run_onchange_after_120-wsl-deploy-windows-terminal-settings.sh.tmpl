@@ -13,8 +13,7 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 TERMINAL_SETTINGS_FILE_WIN=$(win_path_to_wsl "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json")
 
 if [ -f "${TERMINAL_SETTINGS_FILE_WIN}" ]; then
-    log_task Adding color schemes to windows terminal...
-    
+    log_task Adding color schemes and themes to windows terminal...
     defaultSchemeName=""
     for filename in ~/.config/windows-terminal/color-schemes/*; do
         if [ -z "${defaultSchemeName}" ]; then
@@ -23,9 +22,21 @@ if [ -f "${TERMINAL_SETTINGS_FILE_WIN}" ]; then
         jq  '.schemes |= (. + [input] | unique)' "${TERMINAL_SETTINGS_FILE_WIN}" "${filename}" | sponge "${TERMINAL_SETTINGS_FILE_WIN}"
     done
 
+    defaultThemeName=""
+    for filename in ~/.config/windows-terminal/themes/*; do
+        if [ -z "${defaultThemeName}" ]; then
+            defaultThemeName=$(jq -r '.name' "${filename}")
+        fi
+        jq  '.themes |= (. + [input] | unique)' "${TERMINAL_SETTINGS_FILE_WIN}" "${filename}" | sponge "${TERMINAL_SETTINGS_FILE_WIN}"
+    done
+
     if [ ! -z "${defaultSchemeName}" ]; then
-        log_task "Setting the default color scheme to the first one ($defaultSchemeName)"
+        log_green "Setting the default color scheme to the first one ($defaultSchemeName)"
         jq --arg colorschemename "${defaultSchemeName}" '.profiles.defaults.colorScheme = $colorschemename' "${TERMINAL_SETTINGS_FILE_WIN}" | sponge "${TERMINAL_SETTINGS_FILE_WIN}"
+    fi
+    if [ ! -z "${defaultThemeName}" ]; then
+        log_green "Setting the default theme to the first one ($defaultThemeName)"
+        jq --arg colorthemename "${defaultThemeName}" '.theme = $colorthemename' "${TERMINAL_SETTINGS_FILE_WIN}" | sponge "${TERMINAL_SETTINGS_FILE_WIN}"
     fi
 fi
 
