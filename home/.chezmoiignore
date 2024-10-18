@@ -30,6 +30,7 @@
 
 {{ if ne .osid "linux-termux" -}}
 .termux
+.shortcuts
 {{- end }}
 
 {{ if .is_headless }}
