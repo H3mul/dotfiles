@@ -1,52 +1,91 @@
 {
-  "workbench.colorTheme": "Tokyo Night Storm",
-  "diffEditor.ignoreTrimWhitespace": false,
-  "editor.wordWrap": "off",
-  "explorer.confirmDelete": false,
-  "editor.formatOnPaste": true,
-  "css.format.preserveNewLines": false,
-  "vim.useSystemClipboard": true,
-  "workbench.iconTheme": "material-icon-theme",
-  "explorer.confirmDragAndDrop": false,
-  "editor.insertSpaces": true,
-  "files.associations": {
-    "*.yml": "yaml",
-    "*.yaml": "yaml"
-  },
   "[python]": {
     "editor.formatOnType": true
   },
+  "css.format.preserveNewLines": false,
+  "diffEditor.hideUnchangedRegions.enabled": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.renderSideBySide": false,
+  "editor.formatOnPaste": true,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "off",
+  "esphome.dashboardUri": "https://hass.swarm.hemul.net/",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.associations": {
+    "*.yaml": "yaml",
+    "*.yml": "yaml"
+  },
+  "files.eol": "\n",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "redhat.telemetry.enabled": true,
+  "remote.SSH.remotePlatform": {
+    "10.1.1.147": "linux",
+    "talal": "linux"
+  },
+  "sops.enabled": false,
+  "svelte.enable-ts-plugin": true,
+  "terminal.external.windowsExec": "C:\\Windows\\System32\\wsl.exe",
+  "terminal.integrated.fontFamily": "DejaVuSansM Nerd Font Mono",
+  "terminal.integrated.fontSize": 12,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vim.handleKeys": {
+    "<C-d>": true,
+    "<C-f>": false,
+    "<C-n>": false,
+    "<C-p>": false,
+    "<C-s>": false,
+    "<C-z>": false
+  },
   "vim.normalModeKeyBindingsNonRecursive": [
     {
-      "before": [
-        "j"
-      ],
       "after": [
         "g",
+        "j"
+      ],
+      "before": [
         "j"
       ]
     },
     {
-      "before": [
-        "k"
-      ],
       "after": [
         "g",
+        "k"
+      ],
+      "before": [
         "k"
       ]
     }
   ],
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "vim.handleKeys": {
-    "<C-f>": false,
-    "<C-p>": false,
-    "<C-n>": false,
-    "<C-d>": true,
-    "<C-s>": false,
-    "<C-z>": false
+  "vim.useSystemClipboard": true,
+  "vs-kubernetes": {
+    "vs-kubernetes.crd-code-completion": "disabled",
+    "vs-kubernetes.knownKubeconfigs": [
+      "/home/hemul/.kube/config"
+    ],
+    "vs-kubernetes.kubeconfig": "/home/hemul/.kube/config",
+    "vs-kubernetes.minikube-show-information-expiration": "2024-01-14T05:19:29.934Z",
+    "vscode-kubernetes.helm-path.linux": "/home/hemul/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm",
+    "vscode-kubernetes.minikube-path.linux": "/home/hemul/.local/state/vs-kubernetes/tools/minikube/linux-amd64/minikube"
   },
+  "workbench.colorTheme": "Tokyo Night Storm",
   "workbench.editorAssociations": {
     "*.pdf": "default"
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "vim.camelCaseMotion.enable": true,
+  "vim.highlightedyank.enable": true,
+  "vim.hlsearch": true,
+  "vim.showMarksInGutter": true,
+  "vim.statusBarColorControl": true,
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#005f87",
+    "statusBar.noFolderBackground": "#005f87",
+    "statusBar.debuggingBackground": "#005f87",
+    "statusBar.foreground": "#ffffff",
+    "statusBar.debuggingForeground": "#ffffff"
   }
 }
