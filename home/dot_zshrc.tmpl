@@ -175,6 +175,10 @@ alias kns=k9s
 alias arch='proot-distro login archlinux --termux-home --user hemul --work-dir ${PWD}'
 {{- end }}
 
+{{- if lookPath "uv" }}
+alias pip='uv pip'
+{{- end }}
+
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
 }
