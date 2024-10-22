@@ -46,7 +46,7 @@
 {{- end }}
 
 {{ if eq (lookPath "code-server") "" }}
-~/.local/share/code-server
+.local/share/code-server
 {{- end }}
 
 {{ if eq (lookPath "code-oss") "" }}
@@ -58,14 +58,14 @@
 {{- end }}
 
 {{ if eq (lookPath "tig") "" }}
-~/.tigrc
+.tigrc
 {{- end }}
 
 {{ if not .is_arch }}
-~/.custom_pkgbuilds
+.custom_pkgbuilds
 {{- end }}
 
 {{ if eq (lookPath "bat") "" }}
-~/.config/bat
+.config/bat
 .chezmoiscripts/*-run-bat-build-cache.sh
 {{- end }}
