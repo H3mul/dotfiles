@@ -1,3 +1,6 @@
 [submodule "home/dot_config/external_nvim"]
 	path = home/dot_config/external_nvim
 	url = https://github.com/H3mul/LazyVim.git
+[submodule "home/external_dot_custom_pkgbuilds"]
+	path = home/external_dot_custom_pkgbuilds
+	url = https://github.com/H3mul/aur.git
