@@ -61,9 +61,9 @@
 .tigrc
 {{- end }}
 
-{{ if not .is_arch }}
-.custom_pkgbuilds
-{{- end }}
+# {{ if not .is_arch }}
+# .custom_pkgbuilds
+# {{- end }}
 
 {{ if eq (lookPath "bat") "" }}
 .config/bat
