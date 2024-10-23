@@ -2,7 +2,7 @@
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
-# custom pkgbuild repo hash: {{ output "git" "-C" .chezmoi.workingTree "submodule" "status" "home/dot_custom_pkgbuilds" }}
+# custom pkgbuild repo hash: {{ output "git" "-C" .chezmoi.workingTree "submodule" "status" "home/external_dot_custom_pkgbuilds" }}
 
 cd ~/.custom_pkgbuilds/tokyonight-gtk-theme-git
 
