@@ -1,8 +1,13 @@
-Install dotfiles:
+# H3mul's Chezmoi Dotfiles
 
+## Setup
+
+Install [chezmoi](https://www.chezmoi.io/):
 ```
-sh -c "$(wget -qO- https://raw.githubusercontent.com/H3mul/dotfiles/master/scripts/clone_and_install.sh)"
+sudo pacman -S chezmoi
 ```
+
+Init chezmoi repo:
 ```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/H3mul/dotfiles/master/scripts/clone_and_install.sh)"
+chezmoi init h3mul
 ```
