@@ -73,3 +73,8 @@
 {{ if eq (lookPath "lnav") "" }}
 .config/lnav
 {{- end }}
+
+{{ if or (not .is_wsl) (eq (lookPath "UnrealEditor.exe") "") }}
+.config/unreal
+.chezmoiscripts/*-deploy-windows-unreal-engine-conf.sh
+{{- end }}

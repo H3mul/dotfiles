@@ -1,0 +1,16 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+{{ $config_root := joinPath .chezmoi.workingTree "home/dot_config/unreal" }}
+# unreal config dir hash: {{ output "bash" "-c" (print "find " $config_root " -type f -exec sha256sum -b {} \\; | sort | sha256sum | cut -d \" \" -f1") }}
+
+# eg, /mnt/c/Program Files/Epic Games/UE_5.4/Engine/Binaries/Win64
+UNREAL_BIN=$(dirname "$(which UnrealEditor.exe)")
+UNREAL_ROOT=$(cd "${UNREAL_BIN}/../../../"; pwd)
+
+log_task Deploying Unreal settings to "${UNREAL_ROOT}"
+cp -r ~/.config/unreal/* "${UNREAL_ROOT}/"
