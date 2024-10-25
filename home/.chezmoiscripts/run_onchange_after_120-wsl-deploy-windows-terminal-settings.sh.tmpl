@@ -5,10 +5,8 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
-# windows-terminal settings hashes:
-{{- range $file := glob (joinPath .chezmoi.workingTree "dot_config/windows-terminal/*/**") }}
-# {{ include "$file" | sha256sum }}
-{{- end }}
+{{ $config_root := joinPath .chezmoi.workingTree "home/dot_config/windows-terminal" }}
+# windows-terminal config dir hash: {{ output "bash" "-c" (print "find " $config_root " -type f -exec sha256sum -b {} \\; | sort | sha256sum | cut -d \" \" -f1") }}
 
 TERMINAL_SETTINGS_FILE_WIN=$(win_path_to_wsl "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json")
 
