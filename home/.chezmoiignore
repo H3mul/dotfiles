@@ -69,3 +69,7 @@
 .config/bat
 .chezmoiscripts/*-run-bat-build-cache.sh
 {{- end }}
+
+{{ if eq (lookPath "lnav") "" }}
+.config/lnav
+{{- end }}
