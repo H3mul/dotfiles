@@ -235,6 +235,12 @@ function adbtext() {
 }
 {{ end }}
 
+{{- if .is_wsl }}
+function win-to-wsl-path() {
+  echo $(wslpath $(cmd.exe /C "echo $@" 2>/dev/null | tr -d '\r' | sed 's/WINDOWS/Windows/'))
+}
+{{ end }}
+
 function ssh-luks-unlock() {
   ssh_target="${1-}"
   force_interactive="${2-}"
@@ -248,7 +254,7 @@ function ssh-luks-unlock() {
 
   if [ ! -z ${passphrase} ] && [ -z "${force_interactive}" ]; then
     echo "Unlocking luks over ssh with passhphrase..."
-    echo "${passphrase}" | "${ssh_command[@]}" console_auth >/dev/null 2>&1
+    echo "${passphrase}" | "${ssh_command[@]}" console_auth
   else
     echo "Starting interactive ssh session..."
     "${ssh_command[@]}"
@@ -256,4 +262,3 @@ function ssh-luks-unlock() {
 
   echo "Done"
 }
-
