@@ -40,6 +40,6 @@ if [ -z "${SSH_AUTH_SOCK}" ]; then
     if ! ss -a | grep -q "$GPG_AGENT_SOCK"; then
         (nohup ~/.local/bin/wsl-ssh-pageant-socket.sh gpg >/dev/null 2>&1 &)
     fi
+    {{- end -}}
 fi
-{{- end -}}
 {{- end -}}
