@@ -1,0 +1,42 @@
+{
+  "Name": "kube",
+  "Driver": "kubernetes",
+  "Nodes": [
+    {
+      "Name": "builder-amd64",
+      "Endpoint": "kubernetes:///kube?deployment=builder-amd64&kubeconfig=",
+      "Platforms": [
+        {
+          "architecture": "amd64",
+          "os": "linux"
+        }
+      ],
+      "DriverOpts": {
+        "namespace": "buildkit"
+      },
+      "Flags": [
+        "--allow-insecure-entitlement=network.host"
+      ],
+      "Files": null
+    },
+    {
+      "Name": "builder-arm64-qemu",
+      "Endpoint": "kubernetes:///kube?deployment=builder-arm64-qemu&kubeconfig=",
+      "Platforms": [
+        {
+          "architecture": "arm64",
+          "os": "linux"
+        }
+      ],
+      "DriverOpts": {
+        "namespace": "buildkit",
+        "qemu.install": "true"
+      },
+      "Flags": [
+        "--allow-insecure-entitlement=network.host"
+      ],
+      "Files": null
+    }
+  ],
+  "Dynamic": false
+}
