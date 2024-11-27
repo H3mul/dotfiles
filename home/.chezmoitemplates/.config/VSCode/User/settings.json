@@ -87,5 +87,6 @@
     "statusBar.debuggingBackground": "#005f87",
     "statusBar.foreground": "#ffffff",
     "statusBar.debuggingForeground": "#ffffff"
-  }
+  },
+  "workbench.activityBar.location": "top"
 }
