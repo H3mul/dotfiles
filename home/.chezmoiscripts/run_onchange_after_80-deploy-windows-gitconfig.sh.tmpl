@@ -8,7 +8,10 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 # {{ include "dot_gitconfig.tmpl" | sha256sum }}
 # {{ include "dot_gitconfig-windows.tmpl" | sha256sum }}
 
-gitconfig_dest=$(wslpath $(win_cmd "echo %USERPROFILE%"))
+gitconfig_winpath=$(win_cmd "echo %USERPROFILE%")
+gitconfig_winpath_escaped=$(echo "${gitconfig_winpath}" | sed 's/\\/\\\\\\\\/g')
+gitconfig_dest=$(wslpath ${gitconfig_winpath})
 
-log_task Deploying .gitconfig to $gitconfig_dest
-cp ~/.gitconfig-windows "$gitconfig_dest/.gitconfig"
+log_task Deploying .gitconfig and .gitmessage to $gitconfig_dest
+sed --expression "s|~/|${gitconfig_winpath_escaped}\\\\\\\\|" ~/.gitconfig-windows > "$gitconfig_dest/.gitconfig"
+cp ~/.gitmessage "$gitconfig_dest/.gitmessage"
