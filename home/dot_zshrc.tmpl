@@ -250,9 +250,14 @@ function ssh-luks-unlock() {
   if [ -z "${force_interactive}" ] && [ -f "$HOME/keys/${ssh_target}-unlock-passphrase.gpg" ]; then
     echo "Decrypting unlock passphrase..."
     passphrase=$(gpg -d "$HOME/keys/${ssh_target}-unlock-passphrase.gpg" 2>/dev/null)
+
+    if [ -z ${passphrase} ]; then
+      echo "Passphrase key decryption failed (or empty string)"
+      return 1
+    fi
   fi
 
-  if [ ! -z ${passphrase} ] && [ -z "${force_interactive}" ]; then
+  if [ -z "${force_interactive}" ]; then
     echo "Unlocking luks over ssh with passhphrase..."
     echo "${passphrase}" | "${ssh_command[@]}" console_auth
   else
