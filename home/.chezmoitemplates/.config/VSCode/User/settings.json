@@ -88,5 +88,6 @@
     "statusBar.foreground": "#ffffff",
     "statusBar.debuggingForeground": "#ffffff"
   },
-  "workbench.activityBar.location": "top"
+  "workbench.activityBar.location": "top",
+  "workbench.panel.showLabels": false
 }
