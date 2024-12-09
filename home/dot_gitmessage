@@ -1,4 +1,9 @@
 
+# <type>(optional scope): <description> -------- # (50 chars)
+# type eg: fix, feat, build, chore, ci, docs, style, refactor, perf, test
 
-# [ ObsidianNoteId ]
+# Body: -------------------------------------------------------------- # (72 chars)
 
+# Footers:
+# BREAKING CHANGE
+# Task ID: #
