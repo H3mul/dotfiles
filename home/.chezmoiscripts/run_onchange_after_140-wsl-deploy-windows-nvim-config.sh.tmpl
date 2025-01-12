@@ -6,7 +6,7 @@ source {{ .chezmoi.workingTree }}/scripts/common.sh
 source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 {{ $nvim_conf := joinPath .chezmoi.workingTree "home/dot_config/external_nvim" }}
-# nvim config hash: {{ output "bash" "-c" "git submodule status home/dot_config/external_nvim | cut -d \" \" -f2" }}
+# nvim config hash: {{ output "bash" "-c" (print "cd " .chezmoi.workingTree "; git submodule status home/dot_config/external_nvim | cut -d \" \" -f2") }}
 
 win_nvim_conf=$(wslpath $(win_cmd "echo %LOCALAPPDATA%\nvim"))
 
