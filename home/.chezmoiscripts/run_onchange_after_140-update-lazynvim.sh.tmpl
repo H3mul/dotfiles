@@ -1,0 +1,13 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+# {{ output "date" "+%V" | trim }}
+{{- if lookPath "nvim" }}
+
+log_task "Updating LazyVim"
+nvim --headless "+Lazy! sync" +qa
+
+{{- end }}
