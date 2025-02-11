@@ -1,0 +1,46 @@
+Host kaden
+    HostName 10.1.1.192
+    User hemul
+
+Host talal
+    HostName 10.1.1.131
+    User hemul
+
+Host roberto
+    HostName 10.1.1.20
+    User hemul
+    ForwardAgent yes
+
+Host roberto-unlock
+    HostName 10.1.1.20
+    User root
+    Port 222
+
+Host opnsense
+    HostName 10.1.1.1
+    User root
+
+Host openwrt
+    HostName 10.1.1.2
+    User root
+
+Host travel-openwrt
+    HostName 192.168.1.1
+    User root
+
+Host octoprint
+  Hostname 10.1.1.158
+
+Host truenas
+  User admin
+  Hostname 10.1.1.10
+
+Host pineapple
+    User root
+    Hostname 172.16.42.1
+
+######################
+# Default
+
+Host *
+    ServerAliveInterval 180

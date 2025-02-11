@@ -1,0 +1,8 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+grep -qxF 'Include ~/.ssh/common_config' ~/.ssh/config || \
+    (log_task "Including common ssh config"; echo 'Include ~/.ssh/common_config' >> ~/.ssh/config)
