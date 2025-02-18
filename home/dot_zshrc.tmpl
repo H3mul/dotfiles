@@ -144,6 +144,7 @@ alias dc=docker-compose
 alias vim=nvim
 alias t=go-task
 alias cz=chezmoi
+alias sshh=ssh-host
 alias -g NUL="> /dev/null 2>&1"
 alias -g NE="2>/dev/null"
 alias -g CL="2>&1 | cat -A"
@@ -181,6 +182,10 @@ alias pip='uv pip'
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
+}
+
+ssh-host () {
+  ssh -G "${1}" | awk '/^hostname / { print $2 }'
 }
 
 {{- if lookPath "zoxide" }}
