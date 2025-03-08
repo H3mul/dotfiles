@@ -10,6 +10,8 @@
     d = diff
     ds = diff --staged
     c = commit
+    cm = !git add --all && git c -m "${1-update}"
+    cmp= !git cm && git push
     ca = commit --amend
     can = commit --amend --no-edit
     caan = commit --amend --no-edit --all
