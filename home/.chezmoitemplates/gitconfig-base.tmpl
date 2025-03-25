@@ -11,7 +11,7 @@
     ds = diff --staged
     c = commit
     cm = "!f() { \
-            git add --all && git c -m \"${1-update}\"; \
+            git add --all && git c -m \"${*-update}\"; \
           }; f"
     cmp = "!f() { \
             git cm "$1" && git push; \
@@ -44,4 +44,4 @@
 
 [commit]
 	template = ~/.gitmessage
- 
+
