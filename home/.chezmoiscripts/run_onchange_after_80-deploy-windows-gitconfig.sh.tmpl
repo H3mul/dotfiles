@@ -13,6 +13,7 @@ gitconfig_winpath=$(win_cmd "echo %USERPROFILE%")
 gitconfig_winpath_escaped=$(echo "${gitconfig_winpath}" | sed 's/\\/\\\\\\\\/g')
 gitconfig_dest=$(wslpath ${gitconfig_winpath})
 
-log_task Deploying .gitconfig and .gitmessage to $gitconfig_dest
+log_task Deploying .gitconfig, .gitmessage, .gitattributes to $gitconfig_dest
 sed --expression "s|~/|${gitconfig_winpath_escaped}\\\\\\\\|" ~/.gitconfig-windows > "$gitconfig_dest/.gitconfig"
 cp ~/.gitmessage "$gitconfig_dest/.gitmessage"
+cp ~/.gitattributes "$gitconfig_dest/.gitattributes"
