@@ -1,0 +1,15 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+{{ $gh_conf := joinPath .chezmoi.workingTree "home/dot_config/gh/config.yml" }}
+# gh config hash: {{ include "dot_config/gh/config.yml" | sha256sum }}
+
+win_gh_conf=$(wslpath "$(win_cmd "echo %APPDATA%\GitHub CLI\config.yml")")
+
+log_task Deploying gh config to windows: ${win_gh_conf}
+rm -rf "${win_gh_conf}"
+cp -r {{ $gh_conf }} "${win_gh_conf}"
