@@ -8,5 +8,5 @@ prompt: enabled
 pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
-    sc: '!gh search code "$*" --repo $(gh repo view --json nameWithOwner -q ".nameWithOwner" || echo "Not in a repo" >&2)'
+    sc: '!gh search code $@ --repo $(gh repo view --json nameWithOwner -q ".nameWithOwner" || echo "Not in a repo" >&2)'
 version: "1"
