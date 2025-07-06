@@ -5,6 +5,8 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
 
+# Monthly
+# {{ output "date" "+%m" | trim }}
 {{if .github_user }}
 
 log_task Syncing Github user {{ .github_user }} ssh keys with authorized_keys file
