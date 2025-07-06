@@ -3,7 +3,6 @@
 set -eu
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
-source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 # {{ output "date" "+%V" | trim }}
 {{- if lookPath "nvim" }}
@@ -16,7 +15,8 @@ nvim --headless "+Lazy! sync" +qa
 
 {{ if and .is_wsl (ne (output "bash" "-c" "cmd.exe /C \"where nvim\" 2>/dev/null || true") "") }}
 
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 log_task "Updating Windows LazyVim"
-win_cmd "nvim --headless \"+Lazy! sync\" +qa"
+cmd.exe /C nvim --headless "+Lazy! sync" +qa
 
 {{- end }}

@@ -87,6 +87,14 @@
 .config/nvim
 {{- end }}
 
+{{ if and (eq (lookPath "gh") "") (eq (output "bash" "-c" "cmd.exe /C \"where gh\" 2>/dev/null || true") "") }}
+.config/gh
+{{- end }}
+
+{{ if or (not .is_wsl) (eq (output "bash" "-c" "cmd.exe /C \"where gh\" 2>/dev/null || true") "") }}
+.chezmoiscripts/*-deploy-windows-gh-config.sh
+{{- end }}
+
 {{ if or (not .is_wsl) (eq (output "bash" "-c" "cmd.exe /C \"where nvim\" 2>/dev/null || true") "") }}
 .chezmoiscripts/*-deploy-windows-nvim-config.sh
 {{- end }}
