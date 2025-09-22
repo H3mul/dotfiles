@@ -98,3 +98,8 @@
 {{ if or (not .is_wsl) (eq (output "bash" "-c" "cmd.exe /C \"where nvim\" 2>/dev/null || true") "") }}
 .chezmoiscripts/*-deploy-windows-nvim-config.sh
 {{- end }}
+
+{{ if eq (lookPath "zoekt-webserver") "" }}
+.chezmoiscripts/*-wsl-run-zoekt-webserver.sh
+dot_config/systemd/user/wsl-zoekt-webserver.service
+{{- end }}

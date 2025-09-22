@@ -1,0 +1,8 @@
+[Unit]
+Description=WSL2 Zoekt Webserver serving the default index at ~/.zoekt
+
+[Install]
+WantedBy=default.target
+
+[Service]
+ExecStart=zoekt-webserver -rpc
