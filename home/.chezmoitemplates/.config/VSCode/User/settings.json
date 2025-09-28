@@ -14,7 +14,9 @@
     "explorer.confirmDragAndDrop": false,
     "files.associations": {
         "*.yaml": "yaml",
-        "*.yml": "yaml"
+        "*.yml": "yaml",
+        "*.ush": "hlsl",
+        "*.usf": "hlsl",
     },
     "files.eol": "\n",
     "javascript.updateImportsOnFileMove.enabled": "always",
