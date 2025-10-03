@@ -273,3 +273,68 @@ function ssh-luks-unlock() {
 
   echo "Done"
 }
+
+{{- if lookPath "runpodctl" }}
+function runpod-save-ssh() {
+  local runpod_ssh_config="$HOME/.ssh/runpod_config"
+  local ssh_config="$HOME/.ssh/config"
+  local temp_config=$(mktemp)
+
+if [ ! -f "$ssh_config" ]; then
+    echo "Include $runpod_ssh_config" > "$ssh_config"
+else
+    if ! grep -qF "Include $runpod_ssh_config" "$ssh_config"; then
+        printf "Include %s\n" "$runpod_ssh_config" > "$temp_config"
+        cat "$ssh_config" >> "$temp_config"
+        mv "$temp_config" "$ssh_config"
+        echo "Added Include $runpod_ssh_config to the top of $ssh_config"
+    fi
+fi
+  
+  echo "Getting RunPod SSH connections..."
+  local runpod_output=$(runpodctl ssh connect 2>/dev/null)
+
+  # Remove existing runpod_ entries from SSH config
+  if [ -f "$runpod_ssh_config" ]; then
+    awk '
+      /^Host runpod_/ { 
+        skip = 1
+        next 
+      }
+      /^Host / && skip { 
+        skip = 0 
+      }
+      !skip { print }
+    ' "$runpod_ssh_config" > "$temp_config"
+  fi
+
+  if [ -z "$runpod_output" ]; then
+    echo "No RunPod connections found or runpodctl failed"
+    mv "$temp_config" "$runpod_ssh_config"
+    return 1
+  fi
+  
+  # Parse runpodctl output and add new entries
+  echo "$runpod_output" | while IFS= read -r line; do
+    if [[ "$line" =~ ssh[[:space:]]+root@([^[:space:]]+)[[:space:]]+-p[[:space:]]+([0-9]+)[[:space:]]+#[[:space:]]+pod[[:space:]]+[\{][[:space:]]+id:[[:space:]]+\"[^\"]+\",[[:space:]]+name:[[:space:]]+\"([^\"]+)\"[[:space:]]+[\}] ]]; then
+      local hostname="${match[1]}"
+      local port="${match[2]}"
+      local pod_name="${match[3]}"
+      local host_alias="runpod_${pod_name}"
+      
+      echo "Adding SSH host: $host_alias"
+      echo "" >> "$temp_config"
+      echo "Host $host_alias" >> "$temp_config"
+      echo "    HostName $hostname" >> "$temp_config"
+      echo "    Port $port" >> "$temp_config"
+      echo "    User root" >> "$temp_config"
+    fi
+  done
+  
+  # Replace the original config file
+  mv "$temp_config" "$runpod_ssh_config"
+  chmod 600 "$runpod_ssh_config"
+
+  echo "SSH config ${runpod_ssh_config} updated with RunPod connections"
+}
+{{- end -}}
