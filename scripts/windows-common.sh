@@ -1,5 +1,5 @@
 function win_cmd () {
-    cmd.exe /C "$@" | tr -d '\r'
+    cmd.exe /C "$@" 2>/dev/null | tr -d '\r'
 }
 
 function win_path_to_wsl () {
