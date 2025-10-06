@@ -1,0 +1,16 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+{{ $config_root := joinPath .chezmoi.workingTree "home/dot_config/windows-altsnap" }}
+# altsnap config dir hash: {{ output "bash" "-c" (print "find " $config_root " -type f -exec sha256sum -b {} \\; | sort | sha256sum | cut -d \" \" -f1") }}
+
+ALTSNAP_APPDIR=$(win_path_to_wsl "%APPDATA%\AltSnap")
+
+[ -d "${ALTSNAP_APPDIR}" ] || exit 0
+
+log_task Deploying AltSnap settings to "${ALTSNAP_APPDIR}"
+cp -r ~/.config/windows-altsnap/AltSnap.ini "${ALTSNAP_APPDIR}/"

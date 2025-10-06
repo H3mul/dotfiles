@@ -26,6 +26,9 @@
 
 .config/windows-terminal
 .chezmoiscripts/*-wsl-deploy-windows-terminal-settings.sh
+
+.config/windows-altsnap
+.chezmoiscripts/*-deploy-windows-altsnap-conf.sh
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}
