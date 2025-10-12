@@ -23,6 +23,11 @@ packages=(
     duf
     zoxide
     k9s
+
+    {{- if .is_arch }}
+    difftastic
+    {{ end -}}
+
     {{ end -}}
 )
 
@@ -49,8 +54,8 @@ log_task "Installing packages: ${packages[*]}"
 {{ else if .is_arch }}
     packages+=(fd sudo base-devel)
     {{ if lookPath "yay" }}
-        log_cmd yay -Syu --noconfirm --sudoloop --needed "${packages[@]}"
+        log_cmd yay -Syyu --noconfirm --sudoloop --needed "${packages[@]}"
     {{ else }}
-        log_cmd $sudo pacman -Syu --noconfirm --needed "${packages[@]}"
+        log_cmd $sudo pacman -Syyu --noconfirm --needed "${packages[@]}"
     {{ end }}
 {{ end }}
