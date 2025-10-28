@@ -282,6 +282,11 @@ function ssh-luks-unlock() {
   echo "Done"
 }
 
+{{ if lookPath "talosctl" -}}
+export TALOS_HOSTS="10.1.1.3,10.1.1.7,10.1.1.8,10.1.1.9"
+alias tctl="talosctl --nodes ${TALOS_HOSTS}"
+{{- end }}
+
 {{- if lookPath "runpodctl" }}
 function runpod-save-ssh() {
   local runpod_ssh_config="$HOME/.ssh/runpod_config"
