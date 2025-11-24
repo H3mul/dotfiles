@@ -24,6 +24,10 @@
   url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DejaVuSansMono.zip"
   refreshPeriod: "168h"
 
+"scripts":
+  type: "git-repo"
+  url: "https://github.com/H3mul/scripts.git"
+
 {{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-termux") }}
 # fzf ubuntu install is broken, fix the missing file manually
 # https://bugs.launchpad.net/ubuntu/+source/fzf/+bug/1928670
