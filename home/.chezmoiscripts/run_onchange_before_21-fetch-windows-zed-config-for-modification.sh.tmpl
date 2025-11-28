@@ -14,11 +14,10 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 zed_windows_settings_path=$(win_path_to_wsl "%APPDATA%\Zed")
 
-if [ -f "$zed_windows_settings_path" ]; then
+if [ -d "$zed_windows_settings_path" ]; then
     log_task copying Windows Zed config to WSL for modification
     mkdir -p ~/.config/zed
-    cp "$zed_windows_settings_path" ~/.config/zed/settings.json
-    cp "$zed_windows_settings_path" ~/.config/zed/keymap.json
+    cp ${zed_windows_settings_path}/{keymap,settings}.json ~/.config/zed/
 fi
 
 {{ end }}

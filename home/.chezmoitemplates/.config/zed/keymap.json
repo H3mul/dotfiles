@@ -2,11 +2,12 @@
   {
     "context": "Editor && vim_mode",
     "bindings": {
-      "ctrl-c": "editor::Copy"
+      "ctrl-c": "editor::Copy",
+      "ctrl-s": "workspace::Save"
     }
   },
   {
-    "context": "terminal",
+    "context": "Terminal",
     "bindings": {
       "ctrl-t": null
     }
