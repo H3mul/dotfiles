@@ -27,7 +27,7 @@
   "soft_wrap": "editor_width",
   "hard_tabs": false,
   "vim_mode": true,
-  "format_on_save": "on",
+  "format_on_save": "off",
   "remove_trailing_whitespace_on_save": true,
   "icon_theme": {
     "mode": "dark",
