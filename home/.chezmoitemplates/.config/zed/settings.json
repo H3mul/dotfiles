@@ -1,0 +1,51 @@
+{
+  "ui_font_family": ".ZedSans",
+  "buffer_font_family": "Droid Sans Mono",
+  "terminal": {
+    "toolbar": {
+      "breadcrumbs": false
+    },
+    "cursor_shape": "bar",
+    "font_size": 12.0,
+    "font_family": "DejaVuSansM Nerd Font Mono",
+    "blinking": "on"
+  },
+  "base_keymap": "VSCode",
+  "search": {
+    "include_ignored": false
+  },
+  "minimap": {
+    "max_width_columns": 60
+  },
+  "cursor_blink": true,
+  "file_types": {
+    "hlsl": ["*.usf", "*.ush"],
+    "yaml": ["*.yaml", "*.yml"]
+  },
+  "auto_indent_on_paste": true,
+  "soft_wrap": "editor_width",
+  "hard_tabs": false,
+  "vim_mode": true,
+  "format_on_save": "on",
+  "remove_trailing_whitespace_on_save": true,
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
+  "ui_font_size": 15.0,
+  "buffer_font_size": 13.0,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Tokyo Night Storm"
+  },
+  "languages": {
+    "JSON": {
+      "tab_size": 2
+    },
+    "JSONC": {
+      "tab_size": 2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+# zed modify_settings hash: {{ include "dot_config/zed/modify_settings.json" | sha256sum }}
+# zed modify_keymap hash: {{ include "dot_config/zed/modify_keymap.json" | sha256sum }}
+# zed settings hash: {{ include ".chezmoitemplates/.config/zed/settings.json" | sha256sum }}
+# zed keymap hash: {{ include ".chezmoitemplates/.config/zed/keymap.json" | sha256sum }}
+
+{{ if lookPath "code" }}
+
+zed_windows_settings_path=$(win_path_to_wsl "%APPDATA%\Zed")
+
+log_task copying merged Zed config back to Windows
+cp ~/.config/zed/settings.json "$zed_windows_settings_path"
+cp ~/.config/zed/keymap.json "$zed_windows_settings_path"
+
+{{ end }}

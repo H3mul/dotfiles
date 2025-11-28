@@ -1,0 +1,14 @@
+[
+  {
+    "context": "Editor && vim_mode",
+    "bindings": {
+      "ctrl-c": "editor::Copy"
+    }
+  },
+  {
+    "context": "terminal",
+    "bindings": {
+      "ctrl-t": null
+    }
+  }
+]

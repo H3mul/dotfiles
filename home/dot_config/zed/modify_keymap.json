@@ -1,0 +1,8 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $baseZedKeymap := includeTemplate ".config/zed/keymap.json" -}}
+{{- $mergeJsonOperator := printf ". + %s | unique" $baseZedKeymap -}}
+{{- if not (eq .chezmoi.stdin "") -}}
+    {{- fromJsonc .chezmoi.stdin | jq $mergeJsonOperator | first | toPrettyJson -}}
+{{- else -}}
+    {{- $baseZedKeymap -}}
+{{- end }}
