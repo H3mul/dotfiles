@@ -15,7 +15,6 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 zed_windows_settings_path=$(win_path_to_wsl "%APPDATA%\Zed")
 
 log_task copying merged Zed config back to Windows
-cp ~/.config/zed/settings.json "$zed_windows_settings_path"
-cp ~/.config/zed/keymap.json "$zed_windows_settings_path"
+cp -r ~/.config/zed/{settings.json,keymap.json,themes} "$zed_windows_settings_path"
 
 {{ end }}
