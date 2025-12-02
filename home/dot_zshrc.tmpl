@@ -49,6 +49,7 @@ export BAT_PAGER="less"
 {{- end }}
 
 export LESS="-RFi --mouse --use-color"
+export PAGER="less ${LESS}"
 
 export DISABLE_AUTO_TITLE='true'
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#4C566A"
@@ -313,7 +314,7 @@ function runpod-save-ssh() {
     mv "$temp_config" "$runpod_ssh_config"
     return 1
   fi
-  
+
   # Parse runpodctl output and add new entries
   echo "$runpod_output" | while IFS= read -r line; do
     if [[ "$line" =~ ssh[[:space:]]+root@([^[:space:]]+)[[:space:]]+-p[[:space:]]+([0-9]+)[[:space:]]+#[[:space:]]+pod[[:space:]]+[\{][[:space:]]+id:[[:space:]]+\"[^\"]+\",[[:space:]]+name:[[:space:]]+\"([^\"]+)\"[[:space:]]+[\}] ]]; then
@@ -321,7 +322,7 @@ function runpod-save-ssh() {
       local port="${match[2]}"
       local pod_name="${match[3]}"
       local host_alias="runpod_${pod_name}"
-      
+
       echo "Adding SSH host:\t$host_alias\t$hostname:$port"
       echo "" >> "$temp_config"
       echo "Host $host_alias" >> "$temp_config"
@@ -330,11 +331,11 @@ function runpod-save-ssh() {
       echo "    User root" >> "$temp_config"
     fi
   done
-  
+
   # Replace the original config file
   mv "$temp_config" "$runpod_ssh_config"
   chmod 600 "$runpod_ssh_config"
-  
+
   # Clean up consecutive empty lines
   sed -i '/^$/N;/^\n$/d' "$runpod_ssh_config"
 
