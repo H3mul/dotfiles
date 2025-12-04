@@ -1,6 +1,6 @@
 {{- /* chezmoi:modify-template */ -}}
 {{- $baseZedSettings := includeTemplate ".config/zed/settings.json" -}}
-{{- $mergeJsonOperator := printf ". + %s" $baseZedSettings -}}
+{{- $mergeJsonOperator := printf ". * %s" $baseZedSettings -}}
 {{- if not (eq .chezmoi.stdin "") -}}
     {{- fromJsonc .chezmoi.stdin | jq $mergeJsonOperator | first | toPrettyJson -}}
 {{- else -}}

@@ -1,15 +1,17 @@
 [
   {
-    "context": "Editor && vim_mode",
     "bindings": {
       "ctrl-c": "editor::Copy",
-      "ctrl-s": "workspace::Save"
-    }
+      "ctrl-s": "workspace::Save",
+      "ctrl-v": "editor::Paste"
+    },
+    "context": "Editor && vim_mode"
   },
   {
-    "context": "Terminal",
     "bindings": {
-      "ctrl-t": null
-    }
+      "ctrl-t": null,
+      "ctrl-r": null
+    },
+    "context": "Terminal"
   }
 ]
