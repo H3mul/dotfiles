@@ -181,9 +181,14 @@ alias kns=k9s
 {{- if lookPath "proot-distro" }}
 alias arch='proot-distro login archlinux --termux-home --user hemul --work-dir ${PWD}'
 {{- end }}
-
 {{- if lookPath "uv" }}
 alias pip='uv pip'
+{{- end }}
+
+{{ if lookPath "jq" -}}
+jql() {
+    jq -C $@ | less
+}
 {{- end }}
 
 timestamp () {
