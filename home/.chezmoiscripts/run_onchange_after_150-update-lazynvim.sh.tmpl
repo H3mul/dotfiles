@@ -5,6 +5,7 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
 # {{ output "date" "+%V" | trim }}
+# {{ include ".chezmoiignore" | sha256sum | trim }}
 {{- if lookPath "nvim" }}
 
 log_task "Updating LazyVim"

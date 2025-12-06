@@ -86,7 +86,7 @@
 .chezmoiscripts/*-deploy-windows-unreal-engine-conf.sh
 {{- end }}
 
-{{ if eq (lookPath "nvim") "" }}
+{{ if and (not .is_wsl) (eq (lookPath "nvim") "") }}
 .config/nvim
 {{- end }}
 
