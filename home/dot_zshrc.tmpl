@@ -148,7 +148,6 @@ alias e=exit
 alias c=clear
 alias dc=docker-compose
 alias vim=nvim
-alias t=go-task
 alias cz=chezmoi
 alias sshh=ssh-host
 alias -g NUL="> /dev/null 2>&1"
@@ -183,6 +182,15 @@ alias arch='proot-distro login archlinux --termux-home --user hemul --work-dir $
 {{- end }}
 {{- if lookPath "uv" }}
 alias pip='uv pip'
+{{- end }}
+
+{{- if lookPath "go-task" }}
+alias t=go-task
+alias task=go-task
+{{- end }}
+
+{{- if lookPath "task" }}
+alias t=task
 {{- end }}
 
 {{ if lookPath "jq" -}}
