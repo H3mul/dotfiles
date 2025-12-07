@@ -106,3 +106,9 @@
 .chezmoiscripts/*-wsl-run-zoekt-webserver.sh
 dot_config/systemd/user/wsl-zoekt-webserver.service
 {{- end }}
+
+{{ if eq (lookPath "zed") "" }}
+.chezmoiscripts/*deploy-windows-zed-config-for-modification.sh
+.chezmoiscripts/*fetch-windows-zed-config-for-modification.sh
+.config/zed
+{{- end }}
