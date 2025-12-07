@@ -1,0 +1,22 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+# {{ include "private_dot_ssh/private_common_config" | sha256sum }}
+
+ssh_config="$HOME/.ssh/config"
+temp_config=$(mktemp)
+
+log_task "Adding common_config on top of\t$ssh_config"
+
+if [ ! -f "$ssh_config" ]; then
+    echo "Include common_config" > "$ssh_config"
+else if ! grep -qF "Include common_config" "$ssh_config"; then
+    echo "Include common_config" > "$temp_config"
+    cat "$ssh_config" >> "$temp_config"
+    mv "$temp_config" "$ssh_config"
+fi
+
+fi
