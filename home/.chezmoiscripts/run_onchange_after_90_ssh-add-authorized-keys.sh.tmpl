@@ -1,9 +1,0 @@
-#!{{ lookPath "bash" }}
-
-set -eu
-
-source {{ .chezmoi.workingTree }}/scripts/common.sh
-
-{{ range gitHubKeys ".gh_user" }}
-{{- .Key }}
-{{ end }}
