@@ -1,0 +1,11 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+log_task "Set up termux ssh-agent"
+sv-enable ssh-agent
+
+log_task "Set up shared storage"
+termux-setup-storage

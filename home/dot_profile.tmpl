@@ -14,13 +14,19 @@ export EDITOR='nvim'
 export NVIM_HOME=$HOME/{{- .nvim_home }}
 export SYSTEMD_EDITOR=$EDITOR
 
-{{ if and (hasPrefix "linux" .osid) (ne .osid "linux-termux") (not .is_wsl) }}
+{{ if and (hasPrefix "linux" .osid) (ne .osid "linux-termux") (not .is_wsl) -}}
 if [ -z "${SSH_AUTH_SOCK}" ]; then
     # use gpg ssh agent
     export SSH_AGENT_PID=""
     export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
     export GPG_TTY=$(tty)
     gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
+{{- end }}
+
+{{ if eq .osid "linux-termux" -}}
+if [ -z "${SSH_AUTH_SOCK}" ]; then
+    export SSH_AUTH_SOCK="$PREFIX"/var/run/ssh-agent.socket
 fi
 {{- end }}
 

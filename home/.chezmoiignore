@@ -34,6 +34,7 @@
 {{ if ne .osid "linux-termux" -}}
 .termux
 .shortcuts
+.chezmoiscripts/*run-termux-setup.sh
 {{- end }}
 
 {{ if .is_headless }}

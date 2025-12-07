@@ -16,6 +16,10 @@ packages=(
     chezmoi
     openssh
     fontconfig
+    
+    {{- if eq .osid "linux-termux" }}
+    termux-services
+    {{ end -}}
 
     {{- if .install_optional_apps }}
     bat
