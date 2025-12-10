@@ -220,20 +220,6 @@ alias k=kubecolor
 compdef kubecolor=kubectl
 {{ end -}}
 
-kubewatch () {
-  ns="${1-}"
-  [ -z "$ns" ] && ns_flag="-A" || ns_flag="-n"
-  watch -cwt -x zsh -c \
-    "output=\$(kubecolor --force-colors get events $ns_flag $ns --sort-by='{.lastTimestamp}');
-    (echo \$output | head -n 1);
-    (echo \$output | tail -n +2 | tac)"
-}
-_kubewatch () {
-  compadd $(kubectl get ns | tail -n +2 | awk '{ print $1 }')
-}
-compdef _kubewatch kubewatch
-alias kw=kubewatch
-
 {{ end }}
 
 {{- if lookPath "flux" }}
