@@ -8,6 +8,13 @@
     "context": "Editor && vim_mode"
   },
   {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "j": ["workspace::SendKeystrokes", "g j"],
+      "k": ["workspace::SendKeystrokes", "g k"]
+    }
+  },
+  {
     "bindings": {
       "ctrl-t": null,
       "ctrl-r": null
