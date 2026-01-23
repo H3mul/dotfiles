@@ -1,5 +1,16 @@
 source ~/.profile
 
+{{ if .is_wsl -}}
+# Isolate windows paths from lookups before execution for better performance.
+# This makes windows commands "red" in the syntax highlighter, but they still work.
+export FULL_PATH=$PATH
+preexec() { export PATH="$FULL_PATH"; }
+precmd() {
+  export FULL_PATH=$PATH
+  export PATH=$(echo $FULL_PATH | tr ':' '\n' | grep -v '/mnt/c/' | paste -sd ':' -)
+}
+{{- end }}
+
 plugins=(
   fzf
   fzf-tab
