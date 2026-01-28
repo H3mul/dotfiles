@@ -384,4 +384,35 @@ function runpod-save-ssh() {
   fi
   {{- end }}
 }
-{{- end -}}
+{{- end }}
+
+{{ if lookPath "gh" -}}
+gh-create-repo () {
+  local repo_name="${1}"
+  local -a private_flag
+  local -a license_flag
+
+  private_flag=(--public)
+  license_flag=(--license MIT)
+
+  if [ -z "${repo_name}" ]; then
+    echo "Usage: gh-create-repo <repo-name> [private] [license]"
+    return 1
+  fi
+
+  if [[ "${2-}" == "private" ]]; then
+    private_flag=(--private)
+  fi
+
+  if [ -n "${3-}" ]; then
+    license_flag=(--license "${3}")
+  fi
+
+  if ! gh repo view "${repo_name}" >/dev/null 2>&1; then
+    gh repo create "${repo_name}" "${private_flag[@]}" "${license_flag[@]}"
+  fi
+
+  gh repo view "${repo_name}" --json sshUrl --jq '.sshUrl' | xargs -I {} git clone {}
+}
+
+{{- end }}
