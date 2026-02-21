@@ -1,14 +1,26 @@
 source ~/.profile
 
 {{ if .is_wsl -}}
+
 # Isolate windows paths from lookups before execution for better performance.
 # This makes windows commands "red" in the syntax highlighter, but they still work.
 export FULL_PATH=$PATH
+
+# These paths are exposed in the shell for faster path lookups while typing
+export FILTERED_PATH=$(echo $FULL_PATH | tr ':' '\n' | grep -v '/mnt/c/' | paste -sd ':' -)
+export EXTRA_PATH=$(echo $FULL_PATH | tr ':' '\n' | grep '/mnt/c/' | paste -sd ':' -)   
+
+# Update env file for sourcing in other contexts
+echo "PATH=\"\$PATH:${EXTRA_PATH}\"" > $HOME/.extra-paths.env
+
 preexec() { export PATH="$FULL_PATH"; }
-precmd() {
-  export FULL_PATH=$PATH
-  export PATH=$(echo $FULL_PATH | tr ':' '\n' | grep -v '/mnt/c/' | paste -sd ':' -)
-}
+precmd() { export PATH="$FILTERED_PATH"; }
+
+# Keep wsl alive in windows
+if ! ps x -u $(whoami) | grep '[d]bus' > /dev/null; then
+    wsl.exe --exec dbus-launch true
+fi
+
 {{- end }}
 
 plugins=(

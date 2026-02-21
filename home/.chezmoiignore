@@ -16,19 +16,12 @@
 {{- end }}
 
 {{ if not .is_wsl }}
-.chezmoiscripts/*-install-nerd-fonts-win.sh
-.chezmoiscripts/*-deploy-hyper-config-win.sh
 .hyper.js
-
 .gitconfig-windows
-.chezmoiscripts/*-deploy-windows-gitconfig.sh
-.chezmoiscripts/*-windows-vscode-config-for-modification.sh
 
-.config/windows-terminal
-.chezmoiscripts/*-wsl-deploy-windows-terminal-settings.sh
-
-.config/windows-altsnap
-.chezmoiscripts/*-deploy-windows-altsnap-conf.sh
+.config/windows-*
+.chezmoiscripts/*-wsl*
+.chezmoiscripts/*-windows*
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}

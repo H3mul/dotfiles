@@ -1,0 +1,10 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+# zshrc hash: {{ include "dot_zshrc.tmpl" | sha256sum }}
+
+log_task "Running zsh once after zshrc change"
+zsh -c "source ~/.zshrc; exit"

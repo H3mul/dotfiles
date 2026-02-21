@@ -1,0 +1,7 @@
+{
+  "file_types": {
+    "Shell Script": [
+      "*/home/dot_zshrc.tmpl",
+    ],
+  }
+}

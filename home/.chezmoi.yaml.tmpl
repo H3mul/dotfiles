@@ -112,3 +112,6 @@ data:
   install_optional_apps: {{ $install_optional_apps }}
 
   nvim_home: ".config/nvim"
+  
+scriptEnv:
+    FULL_PATH: {{ env "FULL_PATH" | quote }}

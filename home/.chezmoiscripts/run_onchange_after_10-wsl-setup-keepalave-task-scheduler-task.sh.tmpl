@@ -1,0 +1,8 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source $HOME/.extra-paths.env
+
+gsudo.exe schtasks.exe /create /f /tn "WSL_KeepAlive" /tr "wsl.exe --exec dbus-launch true" /sc onlogon /rl highest
