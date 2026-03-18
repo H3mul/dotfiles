@@ -106,3 +106,7 @@ dot_config/systemd/user/wsl-zoekt-webserver.service
 .chezmoiscripts/*fetch-windows-zed-config-for-modification.sh
 .config/zed
 {{- end }}
+
+{{ if eq (lookPath "zsh") "" }}
+.chezmoiscripts/*-update-omz.sh
+{{- end }}
