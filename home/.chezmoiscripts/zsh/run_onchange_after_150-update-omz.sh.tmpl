@@ -9,7 +9,6 @@ source {{ .chezmoi.workingTree }}/scripts/common.sh
 {{ lookPath "zsh" }} <<'EOF'
 
 if [ -f "$ZSH/tools/upgrade.sh" ]; then
-    log_task "Updating OMZ"
     zsh "$ZSH/tools/upgrade.sh"  
 fi
 

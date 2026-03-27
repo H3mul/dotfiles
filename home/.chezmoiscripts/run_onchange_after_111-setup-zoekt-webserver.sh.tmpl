@@ -6,10 +6,10 @@ source {{ .chezmoi.workingTree }}/scripts/common.sh
 
 {{ if .usesystemd }}
 
-# {{ include "dot_config/systemd/user/wsl-zoekt-webserver.service" | sha256sum }}
+# {{ include "dot_config/systemd/user/zoekt-webserver.service" | sha256sum }}
 
 log_task Enabling/starting systemd zoekt webserver...
 systemctl --user daemon-reload
-systemctl --user enable --now wsl-zoekt-webserver.service
+systemctl --user enable --now zoekt-webserver.service
 
 {{- end }}

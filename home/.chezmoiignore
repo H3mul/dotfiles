@@ -7,7 +7,7 @@
 {{- end }}
 
 {{ if or (not .is_wsl) (not .usegpg4win) }}
-.chezmoiscripts/*-deploy-windows-gpg-agent-conf.sh
+.chezmoiscripts/wsl/*-deploy-windows-gpg-agent-conf.sh
 .gnupg/windows-gpg-agent.conf
 .config/systemd/user/wsl-gpg-agent-socket-forward.service
 .config/systemd/user/wsl-ssh-agent-socket-forward.service
@@ -22,6 +22,7 @@
 .config/windows-*
 .chezmoiscripts/*-wsl*
 .chezmoiscripts/*-windows*
+.chezmoiscripts/wsl/**
 {{- end }}
 
 {{ if ne .osid "linux-termux" -}}
@@ -75,9 +76,9 @@
 .docker
 {{- end }}
 
-{{ if or (not .is_wsl) (eq (lookPath "UnrealEditor.exe") "") }}
+{{ if or (not .is_wsl) (eq (output "bash" "-c" "cmd.exe /C \"where UnrealEngine.exe\" 2>/dev/null || true") "") }}
 .config/unreal
-.chezmoiscripts/*-deploy-windows-unreal-engine-conf.sh
+.chezmoiscripts/wsl/*-deploy-windows-unreal-engine-conf.sh
 {{- end }}
 
 {{ if and (not .is_wsl) (eq (lookPath "nvim") "") }}
@@ -89,24 +90,23 @@
 {{- end }}
 
 {{ if or (not .is_wsl) (eq (output "bash" "-c" "cmd.exe /C \"where gh\" 2>/dev/null || true") "") }}
-.chezmoiscripts/*-deploy-windows-gh-config.sh
+.chezmoiscripts/wsl/*-deploy-windows-gh-config.sh
 {{- end }}
 
 {{ if or (not .is_wsl) (eq (output "bash" "-c" "cmd.exe /C \"where nvim\" 2>/dev/null || true") "") }}
-.chezmoiscripts/*-deploy-windows-nvim-config.sh
+.chezmoiscripts/wsl/*-deploy-windows-nvim-config.sh
 {{- end }}
 
 {{ if eq (lookPath "zoekt-webserver") "" }}
-.chezmoiscripts/*-wsl-run-zoekt-webserver.sh
-dot_config/systemd/user/wsl-zoekt-webserver.service
+.chezmoiscripts/*-zoekt-webserver.sh
+dot_config/systemd/user/zoekt-webserver.service
 {{- end }}
 
 {{ if eq (lookPath "zed") "" }}
-.chezmoiscripts/*deploy-windows-zed-config-for-modification.sh
-.chezmoiscripts/*fetch-windows-zed-config-for-modification.sh
+.chezmoiscripts/wsl/*windows-zed-config-for-modification.sh
 .config/zed
 {{- end }}
 
 {{ if eq (lookPath "zsh") "" }}
-.chezmoiscripts/*-update-omz.sh
+.chezmoiscripts/zsh/**
 {{- end }}
