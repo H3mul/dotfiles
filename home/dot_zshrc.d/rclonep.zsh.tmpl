@@ -13,11 +13,9 @@ eg:
 RCLONE_REMOTE=my-gdrive-remote
 RCLONE_DRIVE_ROOT_FOLDER_ID=1Xyfxxxxxxxxxxxxxxxxx
 
-Supports passing all '.rcloneignore' files encountered in subdir chain to rclone '--filter' flag
-(in order of occurrence subdir => parent dir)
-NOTE: does not respect the location of the .rcloneignore file currently; all ignores are relative to root
+Supports '.rclonefilter' file in the root.
 
-Automatically adds '--exclude-if-present .rcloneignoredir' to skip directories
+Automatically adds '--exclude-if-present .rclonefilterdir' to skip directories
 
 Usage: rclonep <command> : <other flags>
 Example: rclonep sync . : -P --dry-run
@@ -32,8 +30,8 @@ EOF
     local dot_rclone_file_name=".rclone"
     local dot_rclone_file=""
     
-    local rclone_ignore_file_name=".rcloneignore"
-    local rclone_ignore_files=()
+    local rclone_filter_file_name=".rclonefilter"
+    local rclone_filter_file=""
     
     if [[ "$1" == "init" ]]; then
         if [ -f "$dot_rclone_file_name" ]; then
@@ -46,19 +44,19 @@ EOF
             echo "Created a $dot_rclone_file_name in the current directory."
         fi
         
-        if [ -f "$rclone_ignore_file_name" ]; then
-            echo "$rclone_ignore_file_name file already present"
+        if [ -f "$rclone_filter_file_name" ]; then
+            echo "$rclone_filter_file_name file already present"
         else
-            touch "$rclone_ignore_file_name"
-            echo "Created a $rclone_ignore_file_name in the current directory."
+            touch "$rclone_filter_file_name"
+            echo "Created a $rclone_filter_file_name in the current directory."
         fi
         
         return 0
     fi
 
     for ((i=0; i<10; i++)); do
-        if [[ -f "$search_dir/$rclone_ignore_file_name" ]]; then
-            rclone_ignore_files+=("$search_dir/$rclone_ignore_file_name")
+        if [[ -f "$search_dir/$rclone_filter_file_name" ]]; then
+            rclone_filter_file=("$search_dir/$rclone_filter_file_name")
         fi
         
         if [[ -f "$search_dir/$dot_rclone_file_name" ]]; then
@@ -95,29 +93,30 @@ EOF
         fi
     done
     
-    args+=("--exclude-if-present" ".rcloneignoredir")
+    args+=("--exclude-if-present" ".rclonefilterdir")
     
-    # Focus on current relative path
-    args+=("--filter" "+ /${rel_path}\n")
+    # Include current workdir
+    if [ -n "${rel_path}" ]; then
+        args+=("--filter" "+ /${rel_path}/**")
+    fi
     
-    # Append any ignore file filters we encountered
-    for ignore_file in "${rclone_ignore_files[@]}"; do
+    if [ -f "$rclone_filter_file" ]; then
         while IFS= read -r line; do
             clean_line=$(echo "$line" | sed 's/#[[:space:]]*.*//; s/[[:space:]]*$//')
-            if [ ! -z "$clean_line" ]; then
+            if [ -n "$clean_line" ]; then
                 args+=("--filter" "$clean_line")
             fi
-        done < "$ignore_file"
-    done
+        done < "$rclone_filter_file"
+    fi
     
-    # Restrict rclone to only our relative path
-    args+=("--filter" "+ /${rel_path}/**")
-    args+=("--filter" "- *")
-
+    # Exclude everything outside workdir
+    if [ -n "${rel_path}" ]; then
+        args+=("--filter" "- **")
+    fi
+    
     echo "Project Root: $project_root"
     echo "Relative Path: $rel_path"
     echo "Rclone dot_rclone_file: $dot_rclone_file"
-    echo "Rclone ignore files: ${rclone_ignore_files[@]}"
     
     (
         cd $project_root
