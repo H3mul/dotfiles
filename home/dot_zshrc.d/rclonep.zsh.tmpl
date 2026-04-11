@@ -95,11 +95,6 @@ EOF
     
     args+=("--exclude-if-present" ".rclonefilterdir")
     
-    # Include current workdir
-    if [ -n "${rel_path}" ]; then
-        args+=("--filter" "+ /${rel_path}/**")
-    fi
-    
     if [ -f "$rclone_filter_file" ]; then
         while IFS= read -r line; do
             clean_line=$(echo "$line" | sed 's/#[[:space:]]*.*//; s/[[:space:]]*$//')
@@ -111,6 +106,7 @@ EOF
     
     # Exclude everything outside workdir
     if [ -n "${rel_path}" ]; then
+        args+=("--filter" "+ /${rel_path}/**")
         args+=("--filter" "- **")
     fi
     
