@@ -1,4 +1,4 @@
-{ 
+{
   "agent": {
     "dock": "right",
     "use_modifier_to_send": true,
@@ -85,6 +85,13 @@
     },
     "YAML": {
       "tab_size": 2
+    },
+    "GDScript": {
+      "formatter": {
+        "external": {
+          "command": "gdscript-formatter"
+        }
+      }
     }
   },
   "lsp_document_colors": "background",
