@@ -20,5 +20,11 @@
       "ctrl-r": null
     },
     "context": "Terminal"
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-o": "editor::SwitchSourceHeader"
+    }
   }
 ]
