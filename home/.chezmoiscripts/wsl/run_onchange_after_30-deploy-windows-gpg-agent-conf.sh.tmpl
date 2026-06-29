@@ -4,7 +4,7 @@ set -eux
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
-# windows gpg conf: {{ include "private_dot_gnupg/windows-gpg-agent.conf" | sha256sum }}
+# windows gpg conf: {{ include "private_dot_gnupg/windows-gpg-agent.conf.tmpl" | sha256sum }}
 
 gpg_conf_dir_win=$(cmd.exe /C "gpg --version" 2>&1 | grep -oP "Home: \K\S*")
 
