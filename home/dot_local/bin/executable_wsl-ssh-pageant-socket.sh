@@ -17,7 +17,7 @@ forward_gpg_agent() {
     rm -rf "$GPG_AGENT_SOCK"
     if test -x "$WSL2_SSH_PAGEANT_BIN"; then
         echo >&2 "Starting socat forwarder..."
-        setsid socat UNIX-LISTEN:"$GPG_AGENT_SOCK,fork" EXEC:"$WSL2_SSH_PAGEANT_BIN --gpgConfigBasepath ${GPG4WIN_CONFIG_PATH} --gpg S.gpg-agent" >/dev/null 2>&1
+        exec socat UNIX-LISTEN:"$GPG_AGENT_SOCK,fork" EXEC:"$WSL2_SSH_PAGEANT_BIN --gpgConfigBasepath ${GPG4WIN_CONFIG_PATH} --gpg S.gpg-agent"
     else
         echo >&2 "WARNING: $WSL2_SSH_PAGEANT_BIN is not executable."
         exit 1
@@ -28,7 +28,7 @@ forward_ssh_agent() {
     rm -rf "$SSH_AUTH_SOCK"
     if test -x "$WSL2_SSH_PAGEANT_BIN"; then
         echo >&2 "Starting socat forwarder..."
-        setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" EXEC:"$WSL2_SSH_PAGEANT_BIN" >/dev/null 2>&1
+        exec socat UNIX-LISTEN:"$SSH_AUTH_SOCK,fork" EXEC:"$WSL2_SSH_PAGEANT_BIN"
     else
         echo >&2 "WARNING: $WSL2_SSH_PAGEANT_BIN is not executable."
     fi

@@ -6,3 +6,9 @@ WantedBy=default.target
 
 [Service]
 ExecStart=/home/hemul/.local/bin/wsl-ssh-pageant-socket.sh ssh
+
+Type=simple
+KillMode=process
+Restart=on-failure
+RestartSec=3s
+StartLimitIntervalSec=0
