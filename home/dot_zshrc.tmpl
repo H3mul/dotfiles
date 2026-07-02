@@ -178,6 +178,7 @@ if [[ -d "$ZSHRCD_DIR" ]]; then
 fi
 
 unset ZSHRCD_DIR
+
 # more here: https://grml.org/zsh/zsh-lovers.html
 alias l='ls -l'
 alias la='ls -la'
@@ -185,10 +186,13 @@ alias ll='ls -l'
 alias h=history
 alias e=exit
 alias c=clear
+
 alias dc=docker-compose
 alias vim=nvim
 alias cz=chezmoi
 alias sshh=ssh-host
+alias todos="rg -n 'TODO|FIXME|BUG|NOTE|DONE|DEBUG|HACK|XXX|REFACTOR'"
+
 alias -g NUL="> /dev/null 2>&1"
 alias -g NE="2>/dev/null"
 alias -g CL="2>&1 | cat -A"
