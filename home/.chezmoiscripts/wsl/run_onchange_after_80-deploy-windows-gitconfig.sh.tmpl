@@ -7,6 +7,7 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 # {{ include "dot_gitconfig.tmpl" | sha256sum }}
 # {{ include "dot_gitconfig-windows.tmpl" | sha256sum }}
+# {{ include ".chezmoitemplates/gitconfig-base.tmpl" | sha256sum }}
 # {{ include "dot_gitmessage" | sha256sum }}
 
 gitconfig_winpath=$(win_cmd "echo %USERPROFILE%")

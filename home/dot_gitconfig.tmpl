@@ -1,5 +1,11 @@
 {{ template "gitconfig-base.tmpl" . }}
 
+[commit]
+	template = ~/.gitmessage
+
+[core]
+    attributesfile = ~/.gitattributes
+
 {{- if lookPath "difft" }}
 [diff]
     # Set difftastic as the default difftool, so we don't need to specify
