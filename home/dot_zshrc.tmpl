@@ -202,7 +202,8 @@ alias -g H='| head'
 alias -g HL='|& head -20'
 alias -g T='| tail'
 alias -g TL='| tail -20'
-alias -g G='| grep'
+alias -g G='|grep'
+alias -g or-api='OPENROUTER_API_KEY=$(cat ~/.config/openrouter/key.txt)'
 
 {{- if lookPath "fdfind" }}
 alias fd=fdfind
@@ -303,11 +304,13 @@ export TALOS_HOSTS="10.1.1.3,10.1.1.7,10.1.1.8,10.1.1.9"
 alias tctl="talosctl --nodes ${TALOS_HOSTS}"
 {{- end }}
 
+or-watch() {
+    if [[ -z "$OPENROUTER_API_KEY" ]]; then
+        echo "Error: OPENROUTER_API_KEY not set" >&2
+        return 1
+    fi
 
-or-api() {
-  if [[ ! -f ~/.config/openrouter/key.txt ]]; then
-    echo "Error: Run 'mkdir -p ~/.config/openrouter && echo \"KEY\" > ~/.config/openrouter/key.txt' first." >&2
-    return 1
-  fi
-  OPENROUTER_API_KEY=$(cat ~/.config/openrouter/key.txt) "$@"
+    watch -n 15 'curl -s -X GET https://openrouter.ai/api/v1/key \
+        -H "Authorization: Bearer $OPENROUTER_API_KEY" | \
+        jq -r "\"Key Label:  \(.data.label)\r\nUsage: $\(.data.usage | . * 100 | floor / 100) (\(.data.usage / .data.limit * 100 | floor)%)\r\n\""'
 }
