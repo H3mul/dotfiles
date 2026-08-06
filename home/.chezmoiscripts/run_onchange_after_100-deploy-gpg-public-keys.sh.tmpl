@@ -4,5 +4,14 @@ set -eu
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
+# Monthly
+# {{ output "date" "+%m" | trim }}
+{{if .github_user }}
+
 log_task Importing gpg key from Github for user {{ .github_user }}
 curl https://github.com/{{ .github_user }}.gpg | gpg --import
+
+{{- end }}
+
+log_task Importing gpg key from key server for email {{ .email }}
+gpg --batch --search-keys --keyserver hkps://keyserver.ubuntu.com --with-colons "{{ .email }}" | awk -F: '$1=="pub" {print $2; exit}' | xargs gpg --batch --keyserver hkps://keyserver.ubuntu.com --recv-keys
