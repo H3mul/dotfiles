@@ -1,6 +1,12 @@
 [
   {
     "bindings": {
+      "alt-o": "editor::SwitchSourceHeader"
+    },
+    "context": "Editor"
+  },
+  {
+    "bindings": {
       "ctrl-c": "editor::Copy",
       "ctrl-s": "workspace::Save",
       "ctrl-v": "editor::Paste"
@@ -8,23 +14,38 @@
     "context": "Editor && vim_mode"
   },
   {
-    "context": "Editor && vim_mode == normal",
     "bindings": {
-      "j": ["workspace::SendKeystrokes", "g j"],
-      "k": ["workspace::SendKeystrokes", "g k"]
-    }
-  },
-  {
-    "bindings": {
-      "ctrl-t": null,
-      "ctrl-r": null
+      "ctrl-r": null,
+      "ctrl-t": null
     },
     "context": "Terminal"
   },
   {
-    "context": "Editor",
+    "bindings": {
+      "j": [
+        "workspace::SendKeystrokes",
+        "g j"
+      ],
+      "k": [
+        "workspace::SendKeystrokes",
+        "g k"
+      ]
+    },
+    "context": "Terminal"
+  },
+  {
+    "context": "Editor && vim_mode == normal",
     "bindings": {
       "alt-o": "editor::SwitchSourceHeader"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "alt-h": "workspace::ActivatePaneLeft",
+      "alt-l": "workspace::ActivatePaneRight",
+      "alt-k": "workspace::ActivatePaneUp",
+      "alt-j": "workspace::ActivatePaneDown"
     }
   }
 ]
