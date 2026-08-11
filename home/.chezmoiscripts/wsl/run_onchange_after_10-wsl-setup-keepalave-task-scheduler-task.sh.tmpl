@@ -5,4 +5,6 @@ set -eu
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 source $HOME/.extra-paths.env
 
-gsudo.exe schtasks.exe /create /f /tn "WSL_KeepAlive" /tr "wsl.exe --exec dbus-launch true" /sc onlogon /rl highest
+task_name="WSL_KeepAlive"
+
+gsudo.exe schtasks.exe /create /tn "$task_name" /tr "cmd.exe /c \"{{ if .usegpg4win }} gpg-connect-agent /bye & {{ end }} wsl.exe --exec dbus-launch true\"" /sc onlogon /rl highest /f
