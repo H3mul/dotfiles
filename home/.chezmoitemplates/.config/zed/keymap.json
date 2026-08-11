@@ -21,19 +21,6 @@
     "context": "Terminal"
   },
   {
-    "bindings": {
-      "j": [
-        "workspace::SendKeystrokes",
-        "g j"
-      ],
-      "k": [
-        "workspace::SendKeystrokes",
-        "g k"
-      ]
-    },
-    "context": "Terminal"
-  },
-  {
     "context": "Editor && vim_mode == normal",
     "bindings": {
       "alt-o": "editor::SwitchSourceHeader"
