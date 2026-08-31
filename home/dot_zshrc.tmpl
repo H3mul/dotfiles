@@ -243,6 +243,10 @@ alias task=go-task
 alias t=task
 {{- end }}
 
+{{- if lookPath "zeditor" }}
+alias zed=zeditor
+{{- end }}
+
 {{ if lookPath "jq" -}}
 jql() {
     jq -C $@ | less

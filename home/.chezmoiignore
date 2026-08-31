@@ -102,7 +102,7 @@
 dot_config/systemd/user/zoekt-webserver.service
 {{- end }}
 
-{{ if eq (lookPath "zed") "" }}
+{{ if and (eq (lookPath "zed") "") (eq (lookPath "zeditor") "") }}
 .chezmoiscripts/wsl/*windows-zed-config-for-modification.sh
 .config/zed
 {{- end }}
