@@ -209,7 +209,6 @@ alias -g HL='|& head -20'
 alias -g T='| tail'
 alias -g TL='| tail -20'
 alias -g G='|grep'
-alias -g or-api='OPENROUTER_API_KEY=$(cat ~/.config/openrouter/key.txt)'
 
 {{- if lookPath "fdfind" }}
 alias fd=fdfind
@@ -252,6 +251,8 @@ jql() {
     jq -C $@ | less
 }
 {{- end }}
+
+or-api() { OPENROUTER_API_KEY="$(cat ~/.config/openrouter/key.txt)" "$@" }
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
