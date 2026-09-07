@@ -40,6 +40,12 @@ Host pineapple
     Hostname 172.16.42.1
 
 ######################
+# WP-Media
+    
+Host gitlab.group.one
+  ProxyJump roberto
+
+######################
 # Default
 
 Host *
