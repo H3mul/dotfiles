@@ -4,7 +4,7 @@ set -eu
 
 source {{ .chezmoi.workingTree }}/scripts/common.sh
 
-# {{ include "private_dot_ssh/private_common_config" | sha256sum }}
+# {{ include "private_dot_ssh/private_common_config.tmpl" | sha256sum }}
 
 ssh_config="$HOME/.ssh/config"
 temp_config=$(mktemp)

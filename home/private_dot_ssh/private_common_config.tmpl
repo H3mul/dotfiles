@@ -42,8 +42,11 @@ Host pineapple
 ######################
 # WP-Media
     
+{{- if ne .chezmoi.hostname "roberto" }}
 Host gitlab.group.one
   ProxyJump roberto
+  
+{{- end }}
 
 ######################
 # Default
