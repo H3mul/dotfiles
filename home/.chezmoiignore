@@ -118,3 +118,7 @@ dot_config/systemd/user/zoekt-webserver.service
 {{ if eq (lookPath "opencode") "" }}
 .config/opencode
 {{- end }}
+
+{{ if eq (lookPath "http") "" }}
+.config/httpie
+{{- end }}
