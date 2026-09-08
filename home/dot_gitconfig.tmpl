@@ -1,5 +1,8 @@
 {{ template "gitconfig-base.tmpl" . }}
 
+[include]
+    path = ~/.gitconfig.local
+
 [commit]
 	template = ~/.gitmessage
 
@@ -25,7 +28,6 @@
             --display=inline \
             --override '*.olga:JSON' \
             -- "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
-        
 
 [pager]
     # Use a pager if the difftool output is larger than one screenful,
@@ -34,4 +36,5 @@
 
 [alias]
     dft = difftool
+    
 {{- end }}
