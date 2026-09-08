@@ -2,17 +2,21 @@ source ~/.profile
 
 {{ if .is_wsl -}}
 
-set_paths() {
+save_win_paths() {
     # Isolate windows paths from lookups before execution for better performance.
     # This makes windows commands "red" in the syntax highlighter, but they still work.
     export FULL_PATH=$PATH
-    
+}
+
+set_paths() {
     # These paths are exposed in the shell for faster path lookups while typing
     export FILTERED_PATH=$(echo $FULL_PATH | tr ':' '\n' | grep -v '/mnt/c/' | paste -sd ':' -)
     export EXTRA_PATH=$(echo $FULL_PATH | tr ':' '\n' | grep '/mnt/c/' | paste -sd ':' -)   
 }
 
+save_win_paths
 set_paths
+
 # Update env file for sourcing in other contexts
 echo "PATH=\"\$PATH:${EXTRA_PATH}\"" > $HOME/.extra-paths.env
 
