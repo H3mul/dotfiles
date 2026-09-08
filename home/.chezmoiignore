@@ -110,3 +110,11 @@ dot_config/systemd/user/zoekt-webserver.service
 {{ if eq (lookPath "zsh") "" }}
 .chezmoiscripts/zsh/**
 {{- end }}
+
+{{ if eq (lookPath "mariadb") "" }}
+.my.cnf
+{{- end }}
+
+{{ if eq (lookPath "opencode") "" }}
+.config/opencode
+{{- end }}
