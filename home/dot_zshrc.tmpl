@@ -319,6 +319,12 @@ export TALOS_HOSTS="10.1.1.3,10.1.1.7,10.1.1.8,10.1.1.9"
 alias tctl="talosctl --nodes ${TALOS_HOSTS}"
 {{- end }}
 
+
+{{ if lookPath "claude" -}}
+export ANTHROPIC_DEFAULT_MODEL="haiku"
+export CLAUDE_CODE_SUBAGENT_MODEL="haiku"
+{{- end }}
+
 or-watch() {
     if [[ -z "$OPENROUTER_API_KEY" ]]; then
         echo "Error: OPENROUTER_API_KEY not set" >&2
