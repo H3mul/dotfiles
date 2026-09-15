@@ -25,6 +25,9 @@
     rpull = pull --rebase --autostash
     ls   = log --oneline --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
     lsa  = log --graph --all --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+    skipped = !git ls-files -v | grep '^S'
+    unskip = !git ls-files -v | grep "^S" | cut -c 3- | xargs -I {} git update-index --no-skip-worktree "{}" 
+    skip-modified = !git ls-files -m | xargs -I {} git update-index --skip-worktree "{}"
 
 [push]
     useForceIfIncludes = true
