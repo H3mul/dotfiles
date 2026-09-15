@@ -22,14 +22,8 @@
   },
   {
     "bindings": {
-      "j": [
-        "workspace::SendKeystrokes",
-        "g j"
-      ],
-      "k": [
-        "workspace::SendKeystrokes",
-        "g k"
-      ]
+      "j": ["workspace::SendKeystrokes", "g j"],
+      "k": ["workspace::SendKeystrokes", "g k"]
     },
     "context": "Terminal"
   },
@@ -46,6 +40,12 @@
       "alt-l": "workspace::ActivatePaneRight",
       "alt-k": "workspace::ActivatePaneUp",
       "alt-j": "workspace::ActivatePaneDown"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-shift-c": "editor::CopyFileLocation"
     }
   }
 ]
