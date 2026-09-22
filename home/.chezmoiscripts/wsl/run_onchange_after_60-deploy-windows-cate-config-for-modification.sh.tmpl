@@ -1,0 +1,18 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
+
+# cate modify_settings hash: {{ include "dot_config/Cate/modify_settings.json" | sha256sum }}
+# cate settings hash: {{ include ".chezmoitemplates/.config/Cate/settings.json" | sha256sum }}
+
+{{ if lookPath "code" }}
+
+cate_windows_settings_path=$(win_path_to_wsl "%APPDATA%\Cate")
+
+log_task copying merged Cate config back to Windows
+cp ~/.config/Cate/settings.json "$cate_windows_settings_path"
+
+{{ end }}

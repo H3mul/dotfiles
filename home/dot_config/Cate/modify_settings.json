@@ -1,0 +1,8 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $baseCateSettings := includeTemplate ".config/Cate/settings.json" -}}
+{{- $mergeJsonOperator := printf "%s * ." $baseCateSettings -}}
+{{- if not (eq .chezmoi.stdin "") -}}
+    {{- fromJsonc .chezmoi.stdin | jq $mergeJsonOperator | first | toPrettyJson -}}
+{{- else -}}
+    {{- $baseCateSettings -}}
+{{- end }}

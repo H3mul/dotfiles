@@ -1,0 +1,75 @@
+{
+  "defaultShellPath": "",
+  "warnBeforeQuit": false,
+  "closeWorktreePanelsOnDelete": true,
+  "activeThemeId": "tokyo-night",
+  "systemLightThemeId": "light-subtle",
+  "systemDarkThemeId": "dark-cold",
+  "canvasGridStyle": "lines",
+  "snapToGrid": true,
+  "placementPicker": false,
+  "showWorktreeTerritory": false,
+  "panelRelationsEnabled": false,
+  "showFileExplorerOnLaunch": false,
+  "showSkillsInWorkspaceOverview": false,
+  "notificationsEnabled": true,
+  "notifyOnlyWhenUnfocused": true,
+  "customShortcuts": {
+    "newTerminal": {
+      "key": "`",
+      "command": false,
+      "shift": false,
+      "option": false,
+      "control": true
+    },
+    "newCanvas": {
+      "key": "",
+      "command": false,
+      "shift": false,
+      "option": false,
+      "control": false
+    },
+    "closePanel": {
+      "key": "",
+      "command": false,
+      "shift": false,
+      "option": false,
+      "control": false
+    },
+    "navigateUp": {
+      "key": "k",
+      "command": false,
+      "shift": false,
+      "option": true,
+      "control": false
+    },
+    "navigateDown": {
+      "key": "j",
+      "command": false,
+      "shift": false,
+      "option": true,
+      "control": false
+    },
+    "navigateLeft": {
+      "key": "h",
+      "command": false,
+      "shift": false,
+      "option": true,
+      "control": false
+    },
+    "navigateRight": {
+      "key": "l",
+      "command": false,
+      "shift": false,
+      "option": true,
+      "control": false
+    },
+    "toggleFullscreen": {
+      "key": "",
+      "command": false,
+      "shift": false,
+      "option": false,
+      "control": false
+    }
+  }
+}
