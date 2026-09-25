@@ -16,10 +16,17 @@ for unit in wsl-gpg-agent-socket-forward.service wsl-ssh-agent-socket-forward.se
 done
 rm -f "$HOME/.local/bin/wsl-ssh-pageant-socket.sh" "$HOME/.local/bin/wsl2-ssh-pageant.exe"
 
-relays=(keepassxc)
+relays=()
 {{- if .usegpg4win }}
 relays+=(ssh gpg)
 {{- end }}
+{{- if lookPath "kpxc-cli" }}
+relays+=(keepassxc)
+{{- end }}
+
+if [ ${#relays[@]} -eq 0 ]; then
+    exit 0
+fi
 
 log_task "Enabling/starting systemd WSL named pipe relays: ${relays[*]}..."
 systemctl --user daemon-reload

@@ -58,7 +58,7 @@
   path: "win32yank.exe"
 {{- end }}
 
-{{ if .is_wsl }}
+{{ if and .is_wsl (or .usegpg4win (lookPath "kpxc-cli")) }}
 # Relay windows named pipes (gpg/ssh agent, keepassxc) to wsl sockets - see wsl-pipe-relay.sh
 ".local/bin/npiperelay.exe":
   type: "file"

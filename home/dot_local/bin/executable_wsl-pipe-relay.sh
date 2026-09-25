@@ -2,6 +2,7 @@
 set -eu
 
 # Relay a Windows named pipe to a unix socket in WSL via socat + npiperelay.exe
+# Delivered by chezmoi externals
 # https://github.com/albertony/npiperelay
 #
 # Usage: wsl-pipe-relay.sh ssh|gpg|keepassxc

@@ -11,11 +11,14 @@
 .gnupg/windows-gpg-agent.conf
 {{- end }}
 
+{{ if not (and .is_wsl (or .usegpg4win (lookPath "kpxc-cli"))) }}
+.local/bin/wsl-pipe-relay.sh
+.config/systemd/user/wsl-pipe-relay@.service
+{{- end }}
+
 {{ if not .is_wsl }}
 .hyper.js
 .gitconfig-windows
-.local/bin/wsl-pipe-relay.sh
-.config/systemd/user/wsl-pipe-relay@.service
 
 .config/windows-*
 .chezmoiscripts/*-wsl*
