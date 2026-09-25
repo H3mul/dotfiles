@@ -47,7 +47,7 @@ log_task "Installing packages: ${packages[*]}"
 {{ end }}
 
 {{ if eq .osid "linux-ubuntu" }}
-    packages+=(fd-find sudo)
+    packages+=(fd-find sudo pipx)
     log_cmd $sudo apt update
     log_cmd $sudo apt install --yes --no-install-recommends "${packages[@]}"
 {{ else if eq .osid "linux-termux" }}
@@ -58,10 +58,15 @@ log_task "Installing packages: ${packages[*]}"
     log_cmd pkg update
     log_cmd pkg install -y "${packages[@]}"
 {{ else if .is_arch }}
-    packages+=(fd sudo base-devel)
+    packages+=(fd sudo base-devel python-pipx)
     {{ if lookPath "yay" }}
         log_cmd yay -Syyu --noconfirm --sudoloop --needed "${packages[@]}"
     {{ else }}
         log_cmd $sudo pacman -Syyu --noconfirm --needed "${packages[@]}"
     {{ end }}
+{{ end }}
+
+{{ if and (ne .osid "linux-termux") (ne .chezmoi.username "root") }}
+# kpxc-cli: query a running KeePassXC GUI (on windows via wsl-pipe-relay.sh)
+log_cmd pipx install keepassxc-cli
 {{ end }}

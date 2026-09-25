@@ -1,11 +1,11 @@
 [Unit]
-Description=WSL2 SSH Pageant forwarder for SSH agent socket
+Description=WSL2 windows named pipe relay for %i socket
 
 [Install]
 WantedBy=default.target
 
 [Service]
-ExecStart=/home/hemul/.local/bin/wsl-ssh-pageant-socket.sh ssh
+ExecStart=%h/.local/bin/wsl-pipe-relay.sh %i
 
 Type=simple
 KillMode=process

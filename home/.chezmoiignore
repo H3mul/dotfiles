@@ -9,15 +9,13 @@
 {{ if or (not .is_wsl) (not .usegpg4win) }}
 .chezmoiscripts/wsl/*-deploy-windows-gpg-agent-conf.sh
 .gnupg/windows-gpg-agent.conf
-.config/systemd/user/wsl-gpg-agent-socket-forward.service
-.config/systemd/user/wsl-ssh-agent-socket-forward.service
-.local/bin/wsl-ssh-pageant-socket.sh
-.chezmoiscripts/*wsl-forward-gpg-ssh-sockets.sh
 {{- end }}
 
 {{ if not .is_wsl }}
 .hyper.js
 .gitconfig-windows
+.local/bin/wsl-pipe-relay.sh
+.config/systemd/user/wsl-pipe-relay@.service
 
 .config/windows-*
 .chezmoiscripts/*-wsl*

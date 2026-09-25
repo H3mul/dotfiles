@@ -58,11 +58,11 @@
   path: "win32yank.exe"
 {{- end }}
 
-{{ if and .is_wsl .usegpg4win }}
-# For using windows native gpg in wsl - see dot_profile
-".local/bin/wsl2-ssh-pageant.exe":
+{{ if .is_wsl }}
+# Relay windows named pipes (gpg/ssh agent, keepassxc) to wsl sockets - see wsl-pipe-relay.sh
+".local/bin/npiperelay.exe":
   type: "file"
-  url: "https://github.com/BlackReloaded/wsl2-ssh-pageant/releases/latest/download/wsl2-ssh-pageant.exe"
+  url: "https://github.com/albertony/npiperelay/releases/latest/download/npiperelay_windows_amd64.exe"
   executable: true
   refreshPeriod: "168h"
 {{- end }}

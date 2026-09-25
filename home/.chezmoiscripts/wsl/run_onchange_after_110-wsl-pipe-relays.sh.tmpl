@@ -1,0 +1,31 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+{{ if .usesystemd }}
+
+# {{ include "dot_config/systemd/user/wsl-pipe-relay@.service" | sha256sum }}
+# {{ include "dot_local/bin/executable_wsl-pipe-relay.sh" | sha256sum }}
+
+# Migrate from the old wsl2-ssh-pageant forwarders
+for unit in wsl-gpg-agent-socket-forward.service wsl-ssh-agent-socket-forward.service; do
+    systemctl --user disable --now "$unit" 2>/dev/null || true
+    rm -f "$HOME/.config/systemd/user/$unit"
+done
+rm -f "$HOME/.local/bin/wsl-ssh-pageant-socket.sh" "$HOME/.local/bin/wsl2-ssh-pageant.exe"
+
+relays=(keepassxc)
+{{- if .usegpg4win }}
+relays+=(ssh gpg)
+{{- end }}
+
+log_task "Enabling/starting systemd WSL named pipe relays: ${relays[*]}..."
+systemctl --user daemon-reload
+for relay in "${relays[@]}"; do
+    systemctl --user enable "wsl-pipe-relay@$relay.service"
+    systemctl --user restart "wsl-pipe-relay@$relay.service"
+done
+
+{{- end }}

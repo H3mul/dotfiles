@@ -39,15 +39,15 @@ if [ -z "${SSH_AUTH_SOCK}" ]; then
     {{ if  (not .usesystemd) }}
 
     # SSH Socket
-    # Removing Linux SSH socket and replacing it by link to wsl2-ssh-pageant SSH socket
+    # Replacing Linux SSH socket by a relay to the windows gpg-agent openssh pipe
     if ! ss -a | grep -q "$SSH_AUTH_SOCK"; then
-    (nohup ~/.local/bin/wsl-ssh-pageant-socket.sh ssh >/dev/null 2>&1 &)
+        (nohup ~/.local/bin/wsl-pipe-relay.sh ssh >/dev/null 2>&1 &)
     fi
 
     # GPG Socket
-    # Removing Linux GPG Agent socket and replacing it by link to wsl2-ssh-pageant GPG socket
+    # Replacing Linux GPG Agent socket by a relay to the windows gpg-agent socket
     if ! ss -a | grep -q "$GPG_AGENT_SOCK"; then
-        (nohup ~/.local/bin/wsl-ssh-pageant-socket.sh gpg >/dev/null 2>&1 &)
+        (nohup ~/.local/bin/wsl-pipe-relay.sh gpg >/dev/null 2>&1 &)
     fi
     {{- end }}
 fi
