@@ -22,10 +22,16 @@
   },
   {
     "bindings": {
-      "j": ["workspace::SendKeystrokes", "g j"],
-      "k": ["workspace::SendKeystrokes", "g k"]
+      "j": [
+        "workspace::SendKeystrokes",
+        "g j"
+      ],
+      "k": [
+        "workspace::SendKeystrokes",
+        "g k"
+      ]
     },
-    "context": "Terminal"
+    "context": "Editor && vim_mode == normal"
   },
   {
     "context": "Editor && vim_mode == normal",
