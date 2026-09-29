@@ -1,10 +1,26 @@
 {
   "model": "haiku",
   "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "ponytail@ponytail": true,
+    "claude-mem-cowork@thedotmack": true,
+    "mattpocock-skills@claude-plugins-official": true,
     "claude-mem@thedotmack": true,
     "superpowers@superpowers-marketplace": true
   },
   "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "thedotmack": {
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
+      }
+    },
     "superpowers-marketplace": {
       "source": {
         "source": "github",
@@ -12,5 +28,5 @@
       }
     }
   },
-  "theme": "dark"
+  "theme": "dark-ansi"
 }
