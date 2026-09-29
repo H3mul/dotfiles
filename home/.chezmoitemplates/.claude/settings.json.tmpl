@@ -28,5 +28,31 @@
       }
     }
   },
+  "hooks": {
+    "PreToolUse": [
+      {{- with lookPath "graphify" }}
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{ . }} hook-guard search",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{{ . }} hook-guard read",
+            "timeout": 10
+          }
+        ]
+      }
+      {{- end }}
+    ]
+  },
   "theme": "dark-ansi"
 }

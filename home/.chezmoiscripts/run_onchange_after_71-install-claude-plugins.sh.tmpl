@@ -1,5 +1,5 @@
 #!{{ lookPath "bash" }}
-# settings hash: {{ includeTemplate ".claude/settings.json" | sha256sum }}
+# settings hash: {{ includeTemplate ".claude/settings.json.tmpl" | sha256sum }}
 
 set -eu
 
@@ -10,7 +10,7 @@ if ! command -v claude >/dev/null 2>&1; then
     exit 0
 fi
 
-base_settings='{{ includeTemplate ".claude/settings.json" }}'
+base_settings='{{ includeTemplate ".claude/settings.json.tmpl" }}'
 
 log_task Registering Claude marketplaces...
 while IFS=$'\t' read -r name repo; do
