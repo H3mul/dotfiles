@@ -1,0 +1,8 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $baseClaudeSettings := includeTemplate ".claude/settings.json" -}}
+{{- $mergeJsonOperator := printf "%s * ." $baseClaudeSettings -}}
+{{- if not (eq .chezmoi.stdin "") -}}
+    {{- fromJsonc .chezmoi.stdin | jq $mergeJsonOperator | first | toPrettyJson -}}
+{{- else -}}
+    {{- $baseClaudeSettings -}}
+{{- end }}

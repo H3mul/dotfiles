@@ -1,0 +1,26 @@
+#!{{ lookPath "bash" }}
+# settings hash: {{ includeTemplate ".claude/settings.json" | sha256sum }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+if ! command -v claude >/dev/null 2>&1; then
+    log_task Claude CLI not found, skipping plugin sync
+    exit 0
+fi
+
+base_settings='{{ includeTemplate ".claude/settings.json" }}'
+
+log_task Registering Claude marketplaces...
+while IFS=$'\t' read -r name repo; do
+    [ -z "${name}" ] && continue
+    log_cmd claude plugin marketplace add "${repo}" || true
+done < <(jq -r '.extraKnownMarketplaces // {} | to_entries[] | [.key, .value.source.repo] | @tsv' <<<"${base_settings}")
+
+log_task Installing Claude plugins...
+while read -r plugin; do
+    [ -z "${plugin}" ] && continue
+    log_cmd claude plugin install "${plugin}" || true
+done < <(jq -r '.enabledPlugins // {} | to_entries[] | select(.value == true) | .key' <<<"${base_settings}")
+log_success Done
