@@ -1,0 +1,13 @@
+{{- with lookPath "graphify" -}}
+#!{{ lookPath "bash" }}
+# graphify: {{ . }}
+
+set -eu
+
+source {{ $.chezmoi.workingTree }}/scripts/common.sh
+
+log_task Installing graphify agents...
+cd "${HOME}"
+log_cmd {{ . }} install || true
+log_success Done
+{{- end }}
