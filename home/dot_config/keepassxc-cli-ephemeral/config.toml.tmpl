@@ -1,7 +1,7 @@
-db = ~/google-drive/KeePass/KeePassDatabase.kdbx
+db = "~/google-drive/KeePass/KeePassDatabase.kdbx"
 {{ if .is_wsl -}}
-keyfile = /mnt/c/Users/Hemul/Documents/KeePassDatabase.key
+keyfile = "/mnt/c/Users/Hemul/Documents/KeePassDatabase.key"
 {{- else -}}
-keyfile = ~/keys/KeePassDatabase.key
+keyfile = "~/keys/KeePassDatabase.key"
 {{- end }}
 ttl = 900

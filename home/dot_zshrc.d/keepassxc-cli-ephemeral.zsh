@@ -4,7 +4,7 @@
 # Caveat: any process running as your uid can read keys from @u while they live;
 # the TTL bounds that exposure window. The TTL is NOT extended by use.
 
-readonly _kp_error_parsing_options=81
+_kp_error_parsing_options=81
 
 _kp_usage() {
     cat <<USAGE_TEXT
@@ -102,8 +102,8 @@ for k, v in tomllib.load(open(sys.argv[1], "rb")).items():
     [[ -n "$env_keyfile" ]] && KP_KEYFILE="$env_keyfile"
     [[ -n "$env_ttl" ]] && KP_TTL="$env_ttl"
     : "${KP_TTL:=900}"
-    KP_DB="${~KP_DB}"
-    KP_KEYFILE="${~KP_KEYFILE}"
+    KP_DB="${KP_DB/#\~/$HOME}"
+    KP_KEYFILE="${KP_KEYFILE/#\~/$HOME}"
 
     local cmd="${1-}"
 
