@@ -1,5 +1,3 @@
-{{ if lookPath "rclone" -}}
-
 rclonep() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
         cat <<EOF
@@ -123,5 +121,3 @@ EOF
         echo_and_run rclone "${args[@]}"
     )
 }
-
-{{- end }}

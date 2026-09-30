@@ -26,11 +26,6 @@ precmd() {
 }
 preexec() { export PATH="$FULL_PATH"; }
 
-# Keep wsl alive in windows
-if ! ps x -u $(whoami) | grep '[d]bus' > /dev/null; then
-    wsl.exe --exec dbus-launch true
-fi
-
 {{- end }}
 
 plugins=(

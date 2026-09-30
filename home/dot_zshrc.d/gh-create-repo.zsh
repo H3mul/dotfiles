@@ -1,5 +1,3 @@
-{{ if lookPath "gh" -}}
-
 gh-create-repo () {
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     cat <<EOF
@@ -37,5 +35,3 @@ EOF
 
   gh repo view "${repo_name}" --json sshUrl --jq '.sshUrl' | xargs -I {} git clone {}
 }
-
-{{- end }}

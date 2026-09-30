@@ -1,4 +1,3 @@
-{{- if lookPath "runpodctl" }}
 # Fetches the running runpod containers and pulls their ssh keys into ssh config
 # It populates the config file ~/.ssh/runpod_config with the latest entries,
 # and inserts an inclusion statement in to the main ~/.ssh/config file
@@ -99,4 +98,3 @@ EOF
   fi
   {{- end }}
 }
-{{- end }}
