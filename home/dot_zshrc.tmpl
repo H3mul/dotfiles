@@ -334,7 +334,11 @@ or-watch() {
 
 {{ if and (lookPath "jira") (lookPath "keepassxc-cli") -}}
 jira-gt() {
-    JIRA_API_TOKEN=$(kp show /Work/WP\ Media/Atlassian -a 'API Token') jira $@
+    # no -F to keep pager in app
+    LESS="-Ri --mouse --use-color" PAGER="less $LESS" JIRA_API_TOKEN=$(kp show /Work/WP\ Media/Atlassian -a 'API Token') jira $@
+}
+jira-gt-for-me() {
+    jira-gt issue list -a $(jira-gt me) -s '~Done' $@
 }
 {{- end }}
 
