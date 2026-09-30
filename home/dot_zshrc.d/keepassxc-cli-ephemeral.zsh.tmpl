@@ -1,0 +1,159 @@
+{{ if and (lookPath "keepassxc-cli") (lookPath "keyctl") -}}
+# Wrapper around keepassxc-cli that prompts for the master password once and caches it
+# in the kernel keyring (keyctl, user keyring @u) with a strict TTL.
+#
+# Caveat: any process running as your uid can read keys from @u while they live;
+# the TTL bounds that exposure window. The TTL is NOT extended by use.
+
+keepassxc-cli-ephemeral() {
+    local cfg_dir="${XDG_CONFIG_HOME:-$HOME/.config}/keepassxc-cli-ephemeral"
+    local cfg_file="$cfg_dir/config"
+
+    if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        cat <<EOF
+Wrapper for keepassxc-cli that caches the master password in the kernel keyring (keyctl) with a strict TTL.
+
+Usage: kp <keepassxc-cli command> [options] [args]   (the database and keyfile are injected for you)
+       kp unlock | lock | status | init
+
+Example: kp ls / kp show -s Github / kp clip Github
+
+Config (env vars override the host-local file $cfg_file):
+  KP_DB       path to the .kdbx database (required)
+  KP_KEYFILE  path to the keyfile (optional)
+  KP_TTL      seconds the password stays cached (default 900), not extended by use
+
+Run 'kp init' to create a template config file for this host.
+EOF
+        return 0
+    fi
+
+    # Env vars take precedence over the host-local config file
+    local env_db="${KP_DB-}" env_keyfile="${KP_KEYFILE-}" env_ttl="${KP_TTL-}"
+    local KP_DB="" KP_KEYFILE="" KP_TTL=""
+    [[ -f "$cfg_file" ]] && source "$cfg_file"
+    [[ -n "$env_db" ]] && KP_DB="$env_db"
+    [[ -n "$env_keyfile" ]] && KP_KEYFILE="$env_keyfile"
+    [[ -n "$env_ttl" ]] && KP_TTL="$env_ttl"
+    : "${KP_TTL:=900}"
+    KP_DB="${~KP_DB}"
+    KP_KEYFILE="${~KP_KEYFILE}"
+
+    local cmd="${1-}"
+
+    if [[ "$cmd" == "init" ]]; then
+        if [[ -f "$cfg_file" ]]; then
+            echo "$cfg_file already exists"
+            return 1
+        fi
+        mkdir -p "$cfg_dir"
+        cat > "$cfg_file" <<EOF
+# Host-local config for keepassxc-cli-ephemeral (kp). Not managed by chezmoi.
+KP_DB=~/path/to/database.kdbx
+KP_KEYFILE=~/path/to/keyfile        # leave empty if the database has no keyfile
+KP_TTL=900
+EOF
+        echo "Created $cfg_file - edit it for this host."
+        return 0
+    fi
+
+    if [[ -z "$KP_DB" ]]; then
+        echo "kp: KP_DB is not set. Run 'kp init' or export KP_DB." >&2
+        return 1
+    fi
+    if [[ ! -f "$KP_DB" ]]; then
+        echo "kp: database not found: $KP_DB" >&2
+        return 1
+    fi
+
+    # One cache key per database
+    local desc="keepassxc-cli-ephemeral:$(realpath "$KP_DB" | sha256sum | cut -c1-12)"
+    local key_id
+    key_id=$(keyctl search @u user "$desc" 2>/dev/null)
+
+    local kp_base=(-q)
+    [[ -n "$KP_KEYFILE" ]] && kp_base+=(-k "$KP_KEYFILE")
+
+    case "$cmd" in
+        lock)
+            if [[ -n "$key_id" ]]; then
+                keyctl revoke "$key_id" >/dev/null && echo "Locked"
+            else
+                echo "Already locked"
+            fi
+            return 0
+            ;;
+        status)
+            if [[ -z "$key_id" ]]; then
+                echo "Locked"
+            else
+                local hex_id=$(printf '%08x' "$key_id")
+                local remaining=$(awk -v id="$hex_id" '$1 == id { print $4 }' /proc/keys)
+                echo "Unlocked (expires in ${remaining:-?})"
+            fi
+            return 0
+            ;;
+    esac
+
+    local pw
+
+    # Validate a password against the database without touching the cache
+    _kp_valid() {
+        print -rn -- "$1" | keepassxc-cli db-info "${kp_base[@]}" "$KP_DB" >/dev/null 2>&1
+    }
+
+    _kp_unlock() {
+        [[ -n "$key_id" ]] && keyctl revoke "$key_id" >/dev/null 2>&1
+        read -rs "pw?Master password ($(basename "$KP_DB")): " </dev/tty
+        echo >&2
+        if ! _kp_valid "$pw"; then
+            echo "kp: could not open database (wrong password?)" >&2
+            pw=""
+            return 1
+        fi
+        key_id=$(keyctl add user "$desc" "$pw" @u) || { pw=""; return 1; }
+        # possessor + user only; no group/other access
+        keyctl setperm "$key_id" 0x3f3f0000 >/dev/null
+        keyctl timeout "$key_id" "$KP_TTL" >/dev/null
+    }
+
+    if [[ -n "$key_id" ]]; then
+        pw=$(keyctl pipe "$key_id" 2>/dev/null)
+    fi
+    if [[ -z "$pw" ]]; then
+        _kp_unlock || return 1
+    fi
+
+    if [[ "$cmd" == "unlock" ]]; then
+        pw=""
+        echo "Unlocked for ${KP_TTL}s"
+        return 0
+    fi
+
+    if [[ -z "$cmd" ]]; then
+        pw=""
+        echo "Usage: kp <keepassxc-cli command> [options] [args] (see kp --help)" >&2
+        return 1
+    fi
+
+    local rc
+    print -rn -- "$pw" | keepassxc-cli "$cmd" "${kp_base[@]}" "$KP_DB" "${@:2}"
+    rc=$?
+
+    # Failed: if the cached password is no longer valid (e.g. it changed), re-prompt once
+    if (( rc != 0 )) && [[ -n "$key_id" ]] && ! _kp_valid "$pw"; then
+        echo "kp: cached password no longer valid" >&2
+        if _kp_unlock; then
+            print -rn -- "$pw" | keepassxc-cli "$cmd" "${kp_base[@]}" "$KP_DB" "${@:2}"
+            rc=$?
+        fi
+    fi
+
+    pw=""
+    unfunction _kp_valid _kp_unlock 2>/dev/null
+    return $rc
+}
+
+alias kp=keepassxc-cli-ephemeral
+
+{{- end }}
