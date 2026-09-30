@@ -335,3 +335,9 @@ or-watch() {
 {{ if and (lookPath "jira") (lookPath "keepassxc-cli") -}}
 alias jira-gt="JIRA_API_TOKEN=$(kp show /Work/WP\ Media/Atlassian -a 'API Token') jira"
 {{- end }}
+
+{{ if and (lookPath "grive") (lookPath "keepassxc-cli") -}}
+grive-hemul-oauth () {
+    grive -i "$(kp show /Main/Grive -a 'Client Id')" -e "$(kp show /Main/Grive -a 'Client Secret')" $@ -a
+}
+{{- end }}
