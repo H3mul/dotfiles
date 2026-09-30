@@ -139,3 +139,7 @@ dot_config/systemd/user/zoekt-webserver.service
 {{ if eq (lookPath "keepassxc-cli") "" }}
 .zshrc.d/keepassxc-cli-ephemeral.zsh
 {{- end }}
+
+{{ if eq (lookPath "grive") "" }}
+google-drive
+{{- end }}
