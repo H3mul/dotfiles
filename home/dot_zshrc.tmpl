@@ -331,3 +331,7 @@ or-watch() {
         -H "Authorization: Bearer $OPENROUTER_API_KEY" | \
         jq -r "\"Key Label:  \(.data.label)\r\nUsage: $\(.data.usage | . * 100 | floor / 100) (\(.data.usage / .data.limit * 100 | floor)%)\r\n\""'
 }
+
+{{ if and (lookPath "jira") (lookPath "keepassxc-cli") -}}
+alias jira-gt="JIRA_API_TOKEN=$(kp show /Work/WP\ Media/Atlassian -a 'API Token') jira"
+{{- end }}
