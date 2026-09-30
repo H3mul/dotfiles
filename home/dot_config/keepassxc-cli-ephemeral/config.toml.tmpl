@@ -1,7 +1,13 @@
+{{- if eq .chezmoi.hostname "Valyn" }}
+db = " /mnt/c/Users/Hemul/GoogleDrive/KeePass/KeePassDatabase.kdbx"
+{{- else -}}
 db = "~/google-drive/KeePass/KeePassDatabase.kdbx"
+{{- end }}
+
 {{ if .is_wsl -}}
 keyfile = "/mnt/c/Users/Hemul/Documents/KeePassDatabase.key"
 {{- else -}}
 keyfile = "~/keys/KeePassDatabase.key"
 {{- end }}
+
 ttl = 900

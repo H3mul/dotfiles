@@ -252,7 +252,7 @@ jql() {
 }
 {{- end }}
 
-or-api() { OPENROUTER_API_KEY="$(cat ~/.config/openrouter/key.txt)" "$@" }
+or-api() { OPENROUTER_API_KEY="$(kp show /Tech/Openrouter -a 'api key')" "$@" }
 
 timestamp () {
     date "+%Y.%m.%d-%H.%M.%S"
