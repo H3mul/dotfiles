@@ -143,3 +143,8 @@ dot_config/systemd/user/zoekt-webserver.service
 {{ if eq (lookPath "grive") "" }}
 google-drive
 {{- end }}
+
+{{ if eq (lookPath "claude") "" }}
+.claude
+.config/schlock
+{{- end }}
