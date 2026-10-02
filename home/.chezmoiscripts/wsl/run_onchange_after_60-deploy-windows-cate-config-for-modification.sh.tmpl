@@ -10,7 +10,7 @@ source {{ .chezmoi.workingTree }}/scripts/windows-common.sh
 
 {{ if lookPath "code" }}
 
-cate_windows_settings_path=$(win_path_to_wsl "%APPDATA%\Cate")
+cate_windows_settings_path=$(win_path_to_wsl "%APPDATA%\Cate\settings.json")
 
 log_task copying merged Cate config back to Windows
 cp ~/.config/Cate/settings.json "$cate_windows_settings_path"
