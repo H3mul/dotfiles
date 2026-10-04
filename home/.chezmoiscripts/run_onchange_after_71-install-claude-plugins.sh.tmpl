@@ -12,15 +12,23 @@ fi
 
 base_settings='{{ includeTemplate ".claude/settings.json.tmpl" }}'
 
+plugins_dir="${CLAUDE_CONFIG_DIR:-${HOME}/.claude}/plugins"
+# Files the claude CLI maintains; checking them avoids slow CLI calls for things already present
+known=$(jq -r 'keys[]' "${plugins_dir}/known_marketplaces.json" 2>/dev/null || true)
+installed=$(jq -r '.plugins // {} | keys[]' "${plugins_dir}/installed_plugins.json" 2>/dev/null || true)
+
 log_task Registering Claude marketplaces...
 while IFS=$'\t' read -r name repo; do
     [ -z "${name}" ] && continue
+    grep -qxF "${name}" <<<"${known}" && continue
     log_cmd claude plugin marketplace add "${repo}" || true
 done < <(jq -r '.extraKnownMarketplaces // {} | to_entries[] | [.key, .value.source.repo] | @tsv' <<<"${base_settings}")
 
 log_task Installing Claude plugins...
+# claude plugin install takes a single plugin, so no bulk install
 while read -r plugin; do
     [ -z "${plugin}" ] && continue
+    grep -qxF "${plugin}" <<<"${installed}" && continue
     log_cmd claude plugin install "${plugin}" || true
 done < <(jq -r '.enabledPlugins // {} | to_entries[] | select(.value == true) | .key' <<<"${base_settings}")
 log_success Done
