@@ -48,3 +48,11 @@
 [safe]
     directory = *
 {{ end }}
+
+[merge]
+    tool = nvim
+[mergetool "nvim"]
+    cmd = nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+    layout = "LOCAL,REMOTE / MERGED"
+[mergetool]
+    prompt = false
