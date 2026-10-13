@@ -341,3 +341,28 @@ grive-hemul-oauth () {
     grive -i "$(kp show /Main/Grive -a 'Client Id')" -e "$(kp show /Main/Grive -a 'Client Secret')" $@ -a
 }
 {{- end }}
+
+export NODE_PATH=$HOME/.node/lib/node_modules
+
+export NPM_CONFIG_PREFIX=$HOME/.node
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  source "$NVM_DIR/nvm.sh" --no-use   # --no-use: keep the Arch node by default
+elif [ -s "/usr/share/nvm/init-nvm.sh" ]; then
+  source "/usr/share/nvm/init-nvm.sh"  # AUR installation
+fi
+
+autoload -U add-zsh-hook
+_nvm_auto() {
+  if [[ -n "$(nvm_find_nvmrc 2>/dev/null)" ]]; then
+    # nvm refuses to switch while a global prefix is set, so drop it inside pinned repos
+    if [[ -z $_NVM_ACTIVE ]]; then unset NPM_CONFIG_PREFIX; _NVM_ACTIVE=1; fi
+    nvm use --silent 2>/dev/null || nvm install      # install the pinned version on first visit
+  elif [[ -n $_NVM_ACTIVE ]]; then
+    nvm use --silent system                          # back to the Arch node
+    export NPM_CONFIG_PREFIX="$HOME/.npm-global"
+    unset _NVM_ACTIVE
+  fi
+}
+add-zsh-hook chpwd _nvm_auto
+_nvm_auto                                            # handles shells that start inside a repo
