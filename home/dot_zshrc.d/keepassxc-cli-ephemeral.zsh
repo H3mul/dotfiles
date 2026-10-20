@@ -194,7 +194,7 @@ EOF
         if keyctl setperm "$new_id" 0x3f3f0000 >/dev/null 2>&1 && keyctl timeout "$new_id" "$KP_TTL" >/dev/null 2>&1; then
             key_id="$new_id"
         else
-            keyctl revoke "$new_id" >/dev/null 2>&1
+            keyctl revoke "$new_id" >/dev/null 2>&1 || true
         fi
         return 0
     }

@@ -53,5 +53,11 @@
     "bindings": {
       "ctrl-shift-c": "editor::CopyFileLocation"
     }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-alt-o": "projects::OpenRecent"
+    }
   }
 ]
