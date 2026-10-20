@@ -1,5 +1,6 @@
 # Wrapper around keepassxc-cli that prompts for the master password once and caches it
-# in the kernel keyring (keyctl, user keyring @u) with a strict TTL.
+# in the kernel keyring (keyctl, user keyring @u) with a strict TTL, when keyctl works.
+# Otherwise every call prompts. Keyring failures never block a prompt-and-run.
 #
 # Caveat: any process running as your uid can read keys from @u while they live;
 # the TTL bounds that exposure window. The TTL is NOT extended by use.
@@ -13,7 +14,8 @@ Usage: kp [-h | --help] [-c | --config <config.toml>] <command> [options] [args]
 
 DESCRIPTION
     Wrapper for keepassxc-cli that caches the master password in the kernel
-    keyring (keyctl) with a strict TTL. The database and keyfile are injected,
+    keyring (keyctl) with a strict TTL when keyctl works, else prompts on every
+    call. The database and keyfile are injected,
     so any keepassxc-cli command works: kp ls / kp show -s Github / kp clip Github
 
     OPTIONS:
@@ -80,12 +82,16 @@ keepassxc-cli-ephemeral() {
     fi
 
     local dep
-    for dep in keyctl python3; do
+    for dep in python3; do
         if (( ! $+commands[$dep] )); then
             _kp_die "missing dependency: $dep"
             return
         fi
     done
+
+    # keyctl is optional: without a usable keyring every call just prompts
+    local have_keyring=0
+    if (( $+commands[keyctl] )); then have_keyring=1; fi
 
     # Env vars take precedence over the host-local config file
     local env_db="${KP_DB-}" env_keyfile="${KP_KEYFILE-}" env_ttl="${KP_TTL-}"
@@ -134,8 +140,10 @@ EOF
 
     # One cache key per database
     local desc="keepassxc-cli-ephemeral:$(realpath "$KP_DB" | sha256sum | cut -c1-12)"
-    local key_id
-    key_id=$(keyctl search @u user "$desc" 2>/dev/null) || key_id=""
+    local key_id=""
+    if (( have_keyring )); then
+        key_id=$(keyctl search @u user "$desc" 2>/dev/null) || key_id=""
+    fi
 
     local kp_base=(-q)
     [[ -n "$KP_KEYFILE" ]] && kp_base+=(-k "$KP_KEYFILE")
@@ -170,6 +178,7 @@ EOF
 
     _kp_unlock() {
         [[ -n "$key_id" ]] && { keyctl revoke "$key_id" >/dev/null 2>&1 || true; }
+        key_id=""
         read -rs "pw?Master password ($(basename "$KP_DB")): " </dev/tty
         echo >&2
         if ! _kp_valid "$pw"; then
@@ -177,10 +186,17 @@ EOF
             pw=""
             return 1
         fi
-        key_id=$(keyctl add user "$desc" "$pw" @u) || { pw=""; return 1; }
-        # possessor + user only; no group/other access
-        keyctl setperm "$key_id" 0x3f3f0000 >/dev/null
-        keyctl timeout "$key_id" "$KP_TTL" >/dev/null
+        # Caching is best-effort: keyctl can fail (e.g. after a kernel upgrade, before reboot). Then just don't cache.
+        (( have_keyring )) || return 0
+        local new_id
+        new_id=$(keyctl add user "$desc" "$pw" @u 2>/dev/null) || return 0
+        # possessor + user only; no group/other access. Revoke if it can't be locked down or expired
+        if keyctl setperm "$new_id" 0x3f3f0000 >/dev/null 2>&1 && keyctl timeout "$new_id" "$KP_TTL" >/dev/null 2>&1; then
+            key_id="$new_id"
+        else
+            keyctl revoke "$new_id" >/dev/null 2>&1
+        fi
+        return 0
     }
 
     if [[ -n "$key_id" ]]; then
@@ -192,7 +208,11 @@ EOF
 
     if [[ "$cmd" == "unlock" ]]; then
         pw=""
-        echo "Unlocked for ${KP_TTL}s"
+        if [[ -n "$key_id" ]]; then
+            echo "Unlocked for ${KP_TTL}s"
+        else
+            echo "Not cached (keyring unavailable): each command will prompt"
+        fi
         return 0
     fi
 
