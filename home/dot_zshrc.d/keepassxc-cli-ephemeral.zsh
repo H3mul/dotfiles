@@ -1,6 +1,9 @@
 # Wrapper around keepassxc-cli that prompts for the master password once and caches it
-# in the kernel keyring (keyctl, user keyring @u) with a strict TTL, when keyctl works.
+# in the kernel user keyring (keyctl, @u) with a strict TTL, when keyctl works.
 # Otherwise every call prompts. Keyring failures never block a prompt-and-run.
+#
+# Needs pam_keyinit in the login PAM stack (session required pam_keyinit.so force revoke),
+# otherwise the session has no keyring link and caching silently fails.
 #
 # Caveat: any process running as your uid can read keys from @u while they live;
 # the TTL bounds that exposure window. The TTL is NOT extended by use.
@@ -33,9 +36,18 @@ DESCRIPTION
 USAGE_TEXT
 }
 
+# Messages: "kp: ..." everywhere. Status goes to stdout, warnings and errors to stderr.
 # No exit here (this is sourced into the shell): callers do `_kp_die ...; return`
+_kp_msg() {
+    print -r -- "kp: $1"
+}
+
+_kp_warn() {
+    print -r -- "kp: $1" >&2
+}
+
 _kp_die() {
-    echo "kp: ${1}" >&2
+    _kp_warn "$1"
     return "${2:-90}"
 }
 
@@ -51,7 +63,7 @@ keepassxc-cli-ephemeral() {
     # '+' stops at the first non-option so keepassxc-cli's own flags (e.g. show -s) pass through
     opts=$(getopt --options +c:h --long config:,help -- "$@" 2>/dev/null) || {
         _kp_usage
-        _kp_die "error: parsing options" "$_kp_error_parsing_options"
+        _kp_die "error parsing options" "$_kp_error_parsing_options"
         return
     }
     eval set -- "$opts"
@@ -115,8 +127,8 @@ for k, v in tomllib.load(open(sys.argv[1], "rb")).items():
 
     if [[ "$cmd" == "init" ]]; then
         if [[ -f "$cfg_file" ]]; then
-            echo "$cfg_file already exists"
-            return 1
+            _kp_die "config already exists: $cfg_file" 1
+            return
         fi
         mkdir -p "${cfg_file:h}"
         cat > "$cfg_file" <<EOF
@@ -125,7 +137,7 @@ db = "~/path/to/database.kdbx"
 keyfile = "~/path/to/keyfile"  # remove if the database has no keyfile
 ttl = 900
 EOF
-        echo "Created $cfg_file - edit it for this host."
+        _kp_msg "created $cfg_file, edit it for this host"
         return 0
     fi
 
@@ -150,20 +162,23 @@ EOF
 
     case "$cmd" in
         lock)
-            if [[ -n "$key_id" ]]; then
-                keyctl revoke "$key_id" >/dev/null && echo "Locked"
+            if [[ -z "$key_id" ]]; then
+                _kp_msg "already locked"
+            elif keyctl revoke "$key_id" >/dev/null 2>&1; then
+                _kp_msg "locked"
             else
-                echo "Already locked"
+                _kp_die "could not remove cached key $key_id (try: keyctl unlink $key_id @u)" 1
+                return
             fi
             return 0
             ;;
         status)
             if [[ -z "$key_id" ]]; then
-                echo "Locked"
+                _kp_msg "locked"
             else
                 local hex_id=$(printf '%08x' "$key_id")
                 local remaining=$(awk -v id="$hex_id" '$1 == id { print $4 }' /proc/keys)
-                echo "Unlocked (expires in ${remaining:-?})"
+                _kp_msg "unlocked (expires in ${remaining:-?})"
             fi
             return 0
             ;;
@@ -177,30 +192,40 @@ EOF
     }
 
     _kp_unlock() {
-        [[ -n "$key_id" ]] && { keyctl revoke "$key_id" >/dev/null 2>&1 || true; }
+        # Drop the previous key. Revoke can be denied, so unlink as the fallback
+        [[ -n "$key_id" ]] && { keyctl revoke "$key_id" >/dev/null 2>&1 || keyctl unlink "$key_id" @u >/dev/null 2>&1 || true; }
         key_id=""
         read -rs "pw?Master password ($(basename "$KP_DB")): " </dev/tty
         echo >&2
         if ! _kp_valid "$pw"; then
-            echo "kp: could not open database (wrong password?)" >&2
+            _kp_warn "could not open database (wrong password?)"
             pw=""
             return 1
         fi
-        # Caching is best-effort: keyctl can fail (e.g. after a kernel upgrade, before reboot). Then just don't cache.
+        # Caching is best-effort: without a usable keyring, just don't cache
         (( have_keyring )) || return 0
         local new_id
-        new_id=$(keyctl add user "$desc" "$pw" @u 2>/dev/null) || return 0
-        # possessor + user only; no group/other access. Revoke if it can't be locked down or expired
+        new_id=$(keyctl add user "$desc" "$pw" @u 2>/dev/null) || {
+            _kp_warn "could not cache the password (keyring unusable; check pam_keyinit in pam.d)"
+            return 0
+        }
+        # possessor + user only; no group/other access. Drop the key if it can't be locked down or expired
         if keyctl setperm "$new_id" 0x3f3f0000 >/dev/null 2>&1 && keyctl timeout "$new_id" "$KP_TTL" >/dev/null 2>&1; then
             key_id="$new_id"
         else
-            keyctl revoke "$new_id" >/dev/null 2>&1 || true
+            # Revoke can be denied too: unlink then, so the password doesn't sit in @u with no TTL
+            keyctl revoke "$new_id" >/dev/null 2>&1 || keyctl unlink "$new_id" @u >/dev/null 2>&1 || true
+            _kp_warn "could not set permissions/TTL on the cached key; not caching"
         fi
         return 0
     }
 
     if [[ -n "$key_id" ]]; then
         pw=$(keyctl pipe "$key_id" 2>/dev/null) || pw=""
+        if [[ -z "$pw" ]]; then
+            # Revoked keys are skipped by search; the unlock below drops the stale key and re-caches
+            _kp_warn "cached key unreadable (revoked?), prompting"
+        fi
     fi
     if [[ -z "$pw" ]]; then
         _kp_unlock || return 1
@@ -209,9 +234,9 @@ EOF
     if [[ "$cmd" == "unlock" ]]; then
         pw=""
         if [[ -n "$key_id" ]]; then
-            echo "Unlocked for ${KP_TTL}s"
+            _kp_msg "unlocked for ${KP_TTL}s"
         else
-            echo "Not cached (keyring unavailable): each command will prompt"
+            _kp_msg "not cached: each command will prompt"
         fi
         return 0
     fi
@@ -221,7 +246,7 @@ EOF
 
     # Failed: if the cached password is no longer valid (e.g. it changed), re-prompt once
     if (( rc != 0 )) && [[ -n "$key_id" ]] && ! _kp_valid "$pw"; then
-        echo "kp: cached password no longer valid" >&2
+        _kp_warn "cached password no longer valid, prompting"
         if _kp_unlock; then
             rc=0
             print -rn -- "$pw" | keepassxc-cli "$cmd" "${kp_base[@]}" "$KP_DB" "${@:2}" || rc=$?
