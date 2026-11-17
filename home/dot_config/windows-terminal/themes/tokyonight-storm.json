@@ -1,14 +1,14 @@
 {
     "name": "Tokyo Night Storm",
     "tab": {
-        "background": "#24283B",
+        "background": "#1A1B26",
         "iconStyle": "default",
         "showCloseButton": "always",
         "unfocusedBackground": null
     },
     "tabRow": {
-        "background": "#28344A",
-        "unfocusedBackground": "#28344A"
+        "background": "#16161E",
+        "unfocusedBackground": "#16161E"
     },
     "window": {
         "applicationTheme": "dark",
