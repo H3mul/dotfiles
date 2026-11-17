@@ -246,6 +246,12 @@ alias t=task
 alias zed=zeditor
 {{- end }}
 
+{{- if lookPath "openspec" }}
+openspec-create-store() {
+    openspec store setup "${1:-}" --path ~/openspec/"${1:-}" --no-init-git
+}
+{{- end }}
+
 {{ if lookPath "jq" -}}
 jql() {
     jq -C $@ | less
