@@ -1,0 +1,9 @@
+#!{{ lookPath "bash" }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+log_task Running initial mem-sync import...
+log_cmd mem-sync import --all
+log_success Done

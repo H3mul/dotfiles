@@ -1,0 +1,10 @@
+#!{{ lookPath "bash" }}
+# config hash: {{ include "dot_claude-mem-sync/config.json.tmpl" | sha256sum }}
+
+set -eu
+
+source {{ .chezmoi.workingTree }}/scripts/common.sh
+
+log_task Installing mem-sync scheduled tasks...
+log_cmd mem-sync schedule install
+log_success Done

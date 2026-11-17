@@ -148,3 +148,12 @@ google-drive
 .claude
 .config/schlock
 {{- end }}
+
+{{ if or (eq (lookPath "claude-mem") "") (eq (lookPath "mem-sync") "") }}
+.claude-mem-sync
+.chezmoiscripts/*-mem-sync-*.sh
+{{- end }}
+
+{{ if not (stat (joinPath .chezmoi.homeDir ".claude-mem" "claude-mem.db")) }}
+.chezmoiscripts/*-initial-mem-sync-import.sh
+{{- end }}
