@@ -1,0 +1,64 @@
+#!{{ lookPath "bash" }}
+# Deploys only the `global` block (host-templated); `projects` is owned by
+# mem-sync's autoDiscover and preserved as-is. Template keys win, extra host keys are kept.
+set -eu
+
+global=$(cat <<'JSON'
+{
+  "devName": "h3mul-{{ .chezmoi.hostname }}",
+  "claudeMemDbPath": "{{ .chezmoi.homeDir }}/.claude-mem/claude-mem.db",
+  "autoDiscover": true,
+  "evictionStrategy": "passive",
+  "evictionKeepTagged": [
+    "#keep"
+  ],
+  "maintenanceSchedule": "monthly",
+  "maintenancePruneOlderThanDays": 90,
+  "maintenancePruneScoreThreshold": 0.3,
+  "mergeCapPerProject": 500,
+  "exportSchedule": "hourly:{{ mod (print `0x` (.chezmoi.hostname | sha256sum | trunc 4) | int) 30 }}",
+  "logLevel": "info",
+  "contributionRetentionDays": 2,
+  "profiles": {
+    "enabled": false,
+    "anonymizeOthers": true
+  },
+  "distillation": {
+    "enabled": false,
+    "provider": "github-copilot",
+    "model": "claude-sonnet-4-20250514",
+    "schedule": "after-merge",
+    "excludeTypes": [],
+    "minObservations": 20,
+    "reviewers": [],
+    "maxTokenBudget": 100000,
+    "allowExternalApi": false
+  },
+  "discoverTemplate": {
+    "remote": {
+      "type": "github",
+      "repo": "h3mul/claude-mem-store",
+      "branch": "main",
+      "autoMerge": true,
+      "protocol": "https"
+    },
+    "export": {
+      "types": [
+        "decision",
+        "bugfix",
+        "discovery"
+      ],
+      "keywords": [],
+      "tags": [
+        "#shared"
+      ],
+      "schedule": "everyday:16:00"
+    }
+  }
+}
+JSON
+)
+
+in=$(cat)
+[ -n "$in" ] || in='{}'
+jq --argjson g "$global" '.global = ((.global // {}) * $g) | .projects //= {}' <<<"$in"
