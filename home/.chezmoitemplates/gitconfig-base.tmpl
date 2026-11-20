@@ -56,3 +56,12 @@
     layout = "LOCAL,REMOTE / MERGED"
 [mergetool]
     prompt = false
+    
+{{- if lookPath "gh" }}
+[credential "https://github.com"]
+    helper =
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper =
+    helper = !/usr/bin/gh auth git-credential
+{{- end }}
