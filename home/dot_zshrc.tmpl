@@ -316,6 +316,17 @@ function win_path_to_wsl () {
 }
 {{ end }}
 
+
+{{ if lookPath "talosctl" -}}
+shipit() {
+  local msg="${1:?commit/PR title}" b="chore/$(date +%s)"
+  git checkout -qb "$b" &&
+  gh pr create --fill --title "$msg" --body "" &&
+  gh pr merge --squash --delete-branch   # add --admin to bypass required checks, if you're allowed
+  git checkout -q main && git pull -q
+}
+{{- end }}
+
 {{ if lookPath "talosctl" -}}
 export TALOS_HOSTS="10.1.1.3,10.1.1.7,10.1.1.8,10.1.1.9"
 alias tctl="talosctl --nodes ${TALOS_HOSTS}"
