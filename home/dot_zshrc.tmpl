@@ -317,13 +317,16 @@ function win_path_to_wsl () {
 {{ end }}
 
 
-{{ if lookPath "talosctl" -}}
+{{ if lookPath "gh" -}}
 shipit() {
   local msg="${1:?commit/PR title}" b="chore/$(date +%s)"
   git checkout -qb "$b" &&
   gh pr create --fill --title "$msg" --body "" &&
-  gh pr merge --squash --delete-branch   # add --admin to bypass required checks, if you're allowed
-  git checkout -q main && git pull -q
+  gh pr merge --squash &&   # add --admin to bypass required checks, if you're allowed
+  # Not --delete-branch: gh then tries its own ff-only pull of main, which fails when local main
+  # carried the (now squashed) commits. Sync by hard reset instead; those commits live in the PR.
+  git checkout -q main && git fetch -q origin main && git reset -q --hard origin/main &&
+  git branch -qD "$b" && git push -q origin --delete "$b"
 }
 {{- end }}
 
