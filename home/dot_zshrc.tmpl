@@ -319,10 +319,13 @@ function win_path_to_wsl () {
 
 {{ if lookPath "gh" -}}
 shipit() {
-  local msg="${1:?commit/PR title}" b="chore/$(date +%s)"
-  git checkout -qb "$b" &&
+  local msg="${1:?commit/PR title}" start b
+  start="$(git branch --show-current)"
+  if [[ $start == main ]]; then b="chore/$(date +%s)"; git checkout -qb "$b" || return; else b="$start"; fi
   gh pr create --fill --title "$msg" --body "" &&
-  gh pr merge --squash &&   # add --admin to bypass required checks, if you're allowed
+  gh pr merge --squash || return   # add --admin to bypass required checks, if you're allowed
+  # Already on a feature branch: stop here, leave it checked out.
+  [[ $start == main ]] || return 0
   # Not --delete-branch: gh then tries its own ff-only pull of main, which fails when local main
   # carried the (now squashed) commits. Sync by hard reset instead; those commits live in the PR.
   git checkout -q main && git fetch -q origin main && git reset -q --hard origin/main &&
